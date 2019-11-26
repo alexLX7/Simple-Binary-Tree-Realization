@@ -145,7 +145,7 @@ class Tree:
         return
 
     def insert(self, node, key): 
-        if node is None: 
+        if not node: 
             return Node(key) 
         if key < node.v: 
             node.l = self.insert(node.l, key) 
@@ -155,23 +155,23 @@ class Tree:
     
     def min_value_node(self, node): 
         current = node 
-        while(current.l is not None): 
+        while(current.l): 
             current = current.l  
         return current  
     
     def delete_node(self, root, key): 
-        if root is None: 
+        if not root: 
             return root  
         if key < root.v: 
             root.l = self.delete_node(root.l, key) 
         elif(key > root.v): 
             root.r = self.delete_node(root.r, key) 
         else: 
-            if root.l is None : 
+            if not root.l: 
                 temp = root.r  
                 root = None 
                 return temp  
-            elif root.r is None : 
+            elif not root.r: 
                 temp = root.l 
                 root = None
                 return temp 
