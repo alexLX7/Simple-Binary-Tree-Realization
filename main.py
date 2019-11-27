@@ -87,7 +87,11 @@ class Tree:
             self._pretty_print_tree(
                 node.r, prefix + ("│   " if isLeft else "    "), False)
 
-        print(prefix + ("└── " if isLeft else "┌── ") + str(node.v))
+        # original
+        # print(prefix + ("└── " if isLeft else "┌── ") + str(node.v))
+        
+        # debug
+        print(prefix + ("└── " if isLeft else "┌── ") + str(node.v) + ' (' +str(type(node.v)) +')')
 
         if node.l:
             self._pretty_print_tree(
@@ -235,21 +239,19 @@ class Tree:
         else:
             print('list_of_frequency is empty')
 
-# class FileManager:  # under construction
-#     def __init__(self):
-#         super().__init__()
+class FileManager:  # going to add json dump and load here
+    def __init__(self):
+        super().__init__()
         
-#     def export_to_file_as_tree(self, tree: Tree, path: str):
-#             # return tree
-#         return None
+    def export_to_file_as_tree(self, current_tree, path: str):
+        return None
     
-#     def export_to_file_as_list(self, tree: Tree, path: str):
-#             # return tree
-#         return None
+    def export_to_file_as_list(self, current_tree, path: str):
+        return None
     
-#     def import_from_file(self, path: str):
-#             # return tree
-#         return None
+    def import_list_as_tree_from_file(self, path: str):
+            # return tree
+        return None
 
 
 class TreeManager:  # under construction
