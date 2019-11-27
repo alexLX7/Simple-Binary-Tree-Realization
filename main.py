@@ -1,6 +1,34 @@
 import random
 import time
+import json
 
+
+class FileHandler():
+    def __init__(self):
+        super().__init__() 
+    
+    def print_data(self, data: dict):
+        for k, v in data.items():
+                    print('{}: {}'.format(k, v))
+    
+    def write_json_file(self, path: str, data: dict):
+        try:
+            with open(path, 'w') as f:
+                json.dump(data, f, indent=4)
+        except:
+            print("Error: cannot write the data to the file with this path:\n")
+            print("Path: " + str(path))
+        return None
+            
+    def read_json_file(self, path: str):
+        try:
+            with open(path) as f:
+                data = json.load(f)
+            return data
+        except:
+            print("Error: cannot read the data from the file with this path:\n")
+            print("Path: " + str(path))
+        return None
 
 class Node:
     def __init__(self, x):
@@ -239,20 +267,6 @@ class Tree:
         else:
             print('list_of_frequency is empty')
 
-class FileManager:  # going to add json dump and load here
-    def __init__(self):
-        super().__init__()
-        
-    def export_to_file_as_tree(self, current_tree, path: str):
-        return None
-    
-    def export_to_file_as_list(self, current_tree, path: str):
-        return None
-    
-    def import_list_as_tree_from_file(self, path: str):
-            # return tree
-        return None
-
 
 class TreeManager:  # under construction
     def __init__(self):
@@ -306,11 +320,7 @@ class TreeManager:  # under construction
     def print_tree(self, _id: int):
         self.list_of_trees[_id].pretty_print_tree()    
 
-
-if __name__ == "__main__":
-    
-    print()
-    
+def demo():
     # =================
     # just a demo 
     # =================
@@ -355,6 +365,83 @@ if __name__ == "__main__":
     print()
     t.print_list_of_frequency()
     print("Process time: " + str(time.time() - start))  # Process time: 0.007252693176269531
+
+
+
+if __name__ == "__main__":
+    
+    print()
+    
+    # # =================
+    # # just a demo 
+    # # =================
+    # start = time.time()
+
+    # # samples
+    # # int with repetitions
+    # # _list = [random.randint(15, 25) for x in range(15)]
+    # # _list = [random.randint(1, 1000) for x in range(1000)]
+    # # int
+    # # _list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 21, 22, 23, 24, 25, 36, 37, 38, 39]
+    # # _list = [21, 20, 18, 20, 19, 23, 20, 21, 17, 19, 19, 22, 17, 16, 17]
+    # _list = [20, 21, 20, 18, 19, 23, 21, 22, 20, 24, 17, 19, 21, 20, 19, 18, 22, 17, 20, 16, 17]
+    # # int without repeat
+    # # _list = random.sample(range(1,20), 10)
+    # # floats
+    # # _list = sample_floats(0, 10, 20) # this function is now a method in TreeManager Class which is under construction
+    # # strings
+    # # _list = ['ha', 'hc', 'hp', 'ah', 'b', 'y', 'hp', 'f', 'a', 'c', 'x']
+    
+    # t = Tree()
+    # print(_list)
+    # print()
+    # for i, v in enumerate(_list):
+    #     t.add(v)
+
+    # # print before deletion
+    # t.pretty_print_tree()    
+
+    # print('Tried to delete Nodes with value "21" 4 times')
+    # t.delete_node(t.root, 21)
+    # t.delete_node(t.root, 21)
+    # t.delete_node(t.root, 21)  # deleted all 3 Nodes with value 21
+    # t.delete_node(t.root, 21)  # wouldn't do anything if there is no any Node with this value
+    # print()
+    
+    # # print after deletion
+    # t.pretty_print_tree()    
+
+    # # freq
+    # t.print_most_frequent_element()
+    # print()
+    # t.print_list_of_frequency()
+    # print("Process time: " + str(time.time() - start))  # Process time: 0.007252693176269531
+
+    # =========================
+    
+    # file_handler = FileHandler()
+
+    _list = [20, 21, 20, 18, 19, 23, 21, 22, 20, 24, 17, 19, 21, 20, 19, 18, 22, 17, 20, 16, 17]
+    
+    t = Tree()
+    for i, v in enumerate(_list):
+        t.add(v)
+
+    # list_ = t.get_tree_as_list()
+
+    # print(list_)
+
+    data_to_dump = {
+        'Tree': tuple(t.get_tree_as_list()),
+    }
+    
+    # input from the file
+    file_handler = FileHandler()
+    # file_handler.print_data(data_to_dump)
+    file_handler.write_json_file('input.json', data_to_dump)
+    data = file_handler.read_json_file('input.json')
+    # # optimized_schedule = OptimizedSchedule(data)
+    
 
     # =================
     # Design of possible GUI
