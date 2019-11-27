@@ -16,7 +16,7 @@ class FileHandler():
             with open(path, 'w') as f:
                 json.dump(data, f, indent=indent)
         except:
-            print("Error: cannot write the data to the file with this path:\n")
+            print("Error: cannot write the data to the file with this path:")
             print("Path: " + str(path))
         return None
     
@@ -25,11 +25,12 @@ class FileHandler():
             with open(path, 'w') as f:
                 json.dump(data, f)
         except:
-            print("Error: cannot write the data to the file with this path:\n")
+            print("Error: cannot write the data to the file with this path:")
             print("Path: " + str(path))
         return None
     
     def write_to_file_as_tree(self, current_tree, path: str):
+        # pretty_print_to_txt
         return None
     
     def read_json_file(self, path: str):
@@ -38,7 +39,7 @@ class FileHandler():
                 data = json.load(f)
             return data
         except:
-            print("Error: cannot read the data from the file with this path:\n")
+            print("Error: cannot read the data from the file with this path:")
             print("Path: " + str(path))
         return None
 
@@ -50,7 +51,7 @@ class Node:
         self.r = None
 
     def __repr__(self):
-        return "Element: {v}, {l}, {r}".format(v=self.v, l=self.l, r=self.r)
+        return "Node: {v}, {l}, {r}".format(v=self.v, l=self.l, r=self.r)
 
 class Tree:
     def __init__(self):
@@ -332,6 +333,7 @@ class TreeManager:  # under construction
     def print_tree(self, _id: int):
         self.list_of_trees[_id].pretty_print_tree()    
 
+
 def demo():
     # =================
     # just a demo 
@@ -379,7 +381,6 @@ def demo():
     print("Process time: " + str(time.time() - start))  # Process time: 0.007252693176269531
 
 
-
 if __name__ == "__main__":
     
     print()
@@ -393,7 +394,7 @@ if __name__ == "__main__":
     data_to_dump = {'Tree': tuple(t.get_tree_as_list())}
     
     file_handler = FileHandler()
-    file_handler.print_data(data_to_dump)
+    # file_handler.print_data(data_to_dump)
     file_handler.write_json_file('input_0.json', data_to_dump)
     file_handler.write_json_file_wo_indent('input_1.json', data_to_dump)
     # data = file_handler.read_json_file('input_0.json')
