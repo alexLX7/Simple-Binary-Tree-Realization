@@ -129,10 +129,10 @@ class Tree:
                 node.r, prefix + ("│   " if isLeft else "    "), False)
 
         # original
-        # print(prefix + ("└── " if isLeft else "┌── ") + str(node.v))
+        print(prefix + ("└── " if isLeft else "┌── ") + str(node.v))
         
         # debug
-        print(prefix + ("└── " if isLeft else "┌── ") + str(node.v) + ' (' +str(type(node.v)) +')')
+        # print(prefix + ("└── " if isLeft else "┌── ") + str(node.v) + ' (' +str(type(node.v)) +')')
 
         if node.l:
             self._pretty_print_tree(
@@ -142,6 +142,8 @@ class Tree:
         size = 0
         for i in range(self.get_len()):
             size += 2**i
+        print(str(size))
+        # the maximum size of a python list on a 32 bit system is 536,870,912 elements
         res = [None] * size
         return self._get_tree_as_list(self.root, 0, res)
 
@@ -281,10 +283,35 @@ class Tree:
             print('list_of_frequency is empty')
 
 
+class TreeValidator:
+    def __init__(self, raw_data):
+        super().__init__()
+        self._valid_input = True
+        self.tree_as_list = None
+        
+        data = self._check_validation_of_main_components(raw_data)
+        if data:
+            self._init(data)
+        else:
+            self._valid_input = False
+    
+    def _init(self, data: dict):
+        self.tree_as_list = data['tree_as_list'] 
+    
+    def _check_validation_of_main_components(self, raw_data: dict):
+        try:
+            dict_to_return = {
+                'tree_as_list': raw_data['tree_as_list']
+            }
+            return dict_to_return
+        except:
+            print('Error: Input is not correct.')
+        return None
+
 class TreeManager:  # under construction
     def __init__(self):
         super().__init__()
-        # self.file_manager = FileManager()
+        # self.file_manager = FileHandler()
         self.list_of_trees = []
     
     def _generated_list_of_int_with_repetitions(self, number_of_elements: int):
@@ -385,20 +412,31 @@ if __name__ == "__main__":
     
     print()
     
-    _list = [20, 21, 20, 18, 19, 23, 21, 22, 20, 24, 17, 19, 21, 20, 19, 18, 22, 17, 20, 16, 17]
+    # _list = [20, 21, 20, 18, 19, 23, 21, 22, 20, 24, 17, 19, 21, 20, 19, 18, 22, 17, 20, 16, 17]
+    
+    _list = [random.randint(1, 1000) for x in range(500)]
     
     t = Tree()
     for i, v in enumerate(_list):
         t.add(v)
+    # t.pretty_print_tree()
 
-    data_to_dump = {'Tree': tuple(t.get_tree_as_list())}
+    # data_to_dump = {'tree_as_list': tuple(t.get_tree_as_list())}
+    data_to_dump = {'tree_as_list': tuple([i for i in t.get_tree_as_list() if i])}
     
     file_handler = FileHandler()
     # file_handler.print_data(data_to_dump)
-    file_handler.write_json_file('input_0.json', data_to_dump)
-    file_handler.write_json_file_wo_indent('input_1.json', data_to_dump)
-    # data = file_handler.read_json_file('input_0.json')
-    # # optimized_schedule = OptimizedSchedule(data)
+    file_handler.write_json_file('input_wo_null_0.json', data_to_dump)
+    file_handler.write_json_file_wo_indent('input_wo_null_1.json', data_to_dump)
+    data = file_handler.read_json_file('input_1.json')
+    
+    tree_validator = TreeValidator(data)
+    t_2 = Tree()
+    for i, v in enumerate(tree_validator.tree_as_list):
+        # print(v)
+        if v:
+            t_2.add(v)
+    # t_2.pretty_print_tree()
     
     # =================
     # Design of possible GUI
