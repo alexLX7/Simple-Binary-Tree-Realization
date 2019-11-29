@@ -24,7 +24,7 @@ class FileHandler():
     
     def write_json_file(self, path: str, data: dict, indent=4):
         try:
-            with open(path, 'w') as f:
+            with open(path, 'w', encoding="utf-8") as f:
                 json.dump(data, f, indent=indent)
         except:
             print("Error: cannot write the data to the file with this path:")
@@ -33,15 +33,11 @@ class FileHandler():
     
     def write_json_file_wo_indent(self, path: str, data: dict):
         try:
-            with open(path, 'w') as f:
+            with open(path, 'w', encoding="utf-8") as f:
                 json.dump(data, f)
         except:
             print("Error: cannot write the data to the file with this path:")
             print("Path: " + str(path))
-        return None
-    
-    def write_to_file_as_tree(self, current_tree, path: str):
-        # pretty_print_to_txt
         return None
     
     def read_json_file(self, path: str):
