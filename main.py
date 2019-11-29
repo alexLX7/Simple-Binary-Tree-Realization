@@ -1,6 +1,7 @@
 import random
 import time
 import json
+import string
 
 
 class FileHandler():
@@ -142,7 +143,7 @@ class Tree:
         size = 0
         for i in range(self.get_len()):
             size += 2**i
-        print(str(size))
+        # print(str(size))
         # the maximum size of a python list on a 32 bit system is 536,870,912 elements
         res = [None] * size
         return self._get_tree_as_list(self.root, 0, res)
@@ -308,47 +309,54 @@ class TreeValidator:
             print('Error: Input is not correct.')
         return None
 
-class TreeManager:  # under construction
+
+class TreeManager:  
     def __init__(self):
         super().__init__()
-        # self.file_manager = FileHandler()
-        self.list_of_trees = []
+        self.tree = Tree()
+        self._list = None
+        self._from = 0
+        self._to = 30
     
-    def _generated_list_of_int_with_repetitions(self, number_of_elements: int):
-        _list = random.sample(range(0,30), number_of_elements)
+    def _generate_list_of_int_with_repetitions(self, number_of_elements: int):
+        _list = [random.randint(self._from, self._to) for i in range(number_of_elements)]
         return _list
     
-    def _generated_list_of_floats_wo_repetitions(self, _from: int, _to: int,
-                                                  number_of_elements: int):
+    def _generate_list_of_floats_wo_repetitions(self, number_of_elements: int):
         _list = []
         seen = set()
         for i in range(number_of_elements):
-            x = random.uniform(_from, _to)
+            x = random.uniform(self._from, self._to)
             while x in seen:
-                x = random.uniform(_from, _to)
+                x = random.uniform(self._from, self._to)
             seen.add(x)
             _list.append(x)
         return _list
     
-    def create_new_random_tree(self,
-                                # _id: int,
-                                type_to_check: str,
-                                number_of_elements: int,
-                                # from_=0,
-                                # to_=20
-                                ):
-        if type_to_check == 'int':
-            tree = self._generated_list_of_int_with_repetitions(number_of_elements) 
-        # if type_to_check == 'str':
-        #     tree = self._generated_list_of_str()    
-        if type_to_check == 'float':
-            tree = self._generated_list_of_floats_wo_repetitions(0, 30, number_of_elements)
-        if tree:
-            self.list_of_trees.append(tree)    
-            # print()
-        else:
-            print('Could not created tree')
-        
+    def _generate_list_of_strings(self, number_of_elements: int):
+        _list = []
+        for x in range(number_of_elements):
+            _list.append(self._generate_single_string())
+        return _list
+    
+    def _generate_single_string(self, size=8):
+        return ''.join(random.SystemRandom().choice(
+            string.ascii_uppercase + string.digits) for _ in range(size))
+    
+    def create_new_random_tree(self, type_to_check: str, number_of_elements: int):
+        try:
+            if type_to_check == 'int':
+                self._list = self._generate_list_of_int_with_repetitions(number_of_elements) 
+            if type_to_check == 'str':
+                self._list = self._generate_list_of_strings(number_of_elements)    
+            if type_to_check == 'float':
+                self._list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
+            for i, v in enumerate(self._list):
+                self.tree.add(v)
+        except:
+            print('Error: Could not generate the list.')
+        return self.tree
+    
     # def create_new_tree_from_imported_list_from_file(self):
     #     tree = self.file_manager.import_from_file()
     #     if tree:
@@ -411,32 +419,37 @@ def demo():
 if __name__ == "__main__":
     
     print()
+    tm = TreeManager()
+    _t = tm.create_new_random_tree('str', 50)
+    _t.pretty_print_tree()
+    
+    # =================
     
     # _list = [20, 21, 20, 18, 19, 23, 21, 22, 20, 24, 17, 19, 21, 20, 19, 18, 22, 17, 20, 16, 17]
     
-    _list = [random.randint(1, 1000) for x in range(500)]
+    # # _list = [random.randint(1, 1000) for x in range(500)]
     
-    t = Tree()
-    for i, v in enumerate(_list):
-        t.add(v)
-    # t.pretty_print_tree()
+    # t = Tree()
+    # for i, v in enumerate(_list):
+    #     t.add(v)
+    # # t.pretty_print_tree()
 
-    # data_to_dump = {'tree_as_list': tuple(t.get_tree_as_list())}
-    data_to_dump = {'tree_as_list': tuple([i for i in t.get_tree_as_list() if i])}
+    # # data_to_dump = {'tree_as_list': tuple(t.get_tree_as_list())} # with null
+    # data_to_dump = {'tree_as_list': tuple([i for i in t.get_tree_as_list() if i])}
     
-    file_handler = FileHandler()
-    # file_handler.print_data(data_to_dump)
-    file_handler.write_json_file('input_wo_null_0.json', data_to_dump)
-    file_handler.write_json_file_wo_indent('input_wo_null_1.json', data_to_dump)
-    data = file_handler.read_json_file('input_1.json')
+    # file_handler = FileHandler()
+    # # file_handler.print_data(data_to_dump)
+    # file_handler.write_json_file('input_0.json', data_to_dump)
+    # file_handler.write_json_file_wo_indent('input_1.json', data_to_dump)
+    # data = file_handler.read_json_file('input_1.json')
     
-    tree_validator = TreeValidator(data)
-    t_2 = Tree()
-    for i, v in enumerate(tree_validator.tree_as_list):
-        # print(v)
-        if v:
-            t_2.add(v)
-    # t_2.pretty_print_tree()
+    # tree_validator = TreeValidator(data)
+    # t_2 = Tree()
+    # for i, v in enumerate(tree_validator.tree_as_list):
+    #     # print(v)
+    #     if v:
+    #         t_2.add(v)
+    # # t_2.pretty_print_tree()
     
     # =================
     # Design of possible GUI
