@@ -289,7 +289,7 @@ class TreeManager:
         super().__init__()
         self.file_handler = FileHandler()
         
-        self._key = 'tree_as_list' # for json format, saves the tree as list with name '_key'
+        self._tree_name = 'tree_as_list' # for json format, saves tree as list with name '_tree_name'
         self._from = 0
         self._to = 30
         self._min_number_of_elements = 0
@@ -334,10 +334,13 @@ class TreeManager:
         return None
     
     def _create_tree_out_of_the_list(self, _list: list):
-        tree = Tree()
-        for i, v in enumerate(_list):
-            tree.add(v)
-        return tree
+        _tree = Tree()
+        if _list:
+            _type = type(_list[0])
+            for i, v in enumerate(_list):
+                if isinstance(v, _type):
+                    _tree.add(v)
+        return _tree
     
     def create_new_random_tree(self, type_to_check: str, number_of_elements: int):
         try:
@@ -354,8 +357,8 @@ class TreeManager:
         return None
     
     def _process_the_tree(self, tree: Tree):
-        # data_to_dump = {self._key: tuple(tree.get_tree_as_list())} # with null
-        data_to_dump = {self._key: tuple([i for i in tree.get_tree_as_list() if i])}
+        # data_to_dump = {self._tree_name: tuple(tree.get_tree_as_list())} # with null
+        data_to_dump = {self._tree_name: tuple([i for i in tree.get_tree_as_list() if i])}
         return data_to_dump
     
     def write_tree_to_json_file_as_list(self, tree: Tree, path: str):
@@ -379,7 +382,7 @@ class TreeManager:
     def read_tree_from_json_file(self, path: str):
         try:
             data = self.file_handler.read_json_file(path)
-            return self._create_tree_out_of_the_list(self._validate_raw_data(data, self._key))
+            return self._create_tree_out_of_the_list(self._validate_raw_data(data, self._tree_name))
         except:
             print('Error: Cannot read the data from the file.')
         return None
@@ -442,10 +445,10 @@ def demo_1():
     # =================
     print()
     tm = TreeManager()
-    t = tm.create_new_random_tree('int', 50)
+    t = tm.create_new_random_tree('str', 50)
     # if t:
     #     t.pretty_print_tree()
-    tm.write_tree_to_json_file_as_list(t, '0.json')
+    # tm.write_tree_to_json_file_as_list(t, '1.json')
     t_0 = tm.read_tree_from_json_file('0.json')
     t_0.pretty_print_tree()
 
