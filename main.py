@@ -313,11 +313,12 @@ class TreeValidator:
 class TreeManager:  
     def __init__(self):
         super().__init__()
-        # self.tree = Tree()
         self.file_handler = FileHandler()
-        self._list = None
+        
         self._from = 0
         self._to = 30
+        self._min_number_of_elements = 0
+        self._max_number_of_elements = 1024
     
     def _generate_list_of_int_with_repetitions(self, number_of_elements: int):
         _list = [random.randint(self._from, self._to) for i in range(number_of_elements)]
@@ -345,7 +346,7 @@ class TreeManager:
             string.ascii_uppercase + string.digits) for _ in range(size))
     
     def _validate_number_of_elements(self, number_of_elements: int):
-        if 0 < number_of_elements < 1024: 
+        if self._min_number_of_elements < number_of_elements < self._max_number_of_elements: 
             return number_of_elements
         return None
     
@@ -369,16 +370,41 @@ class TreeManager:
             print('Error: Could not generate the list.')
         return None
     
-    # def create_new_tree_from_imported_list_from_file(self):
-    #     tree = self.file_manager.import_from_file()
-    #     if tree:
-    #         self.list_of_trees.append(tree) 
-    #         # print()   
-    #     else:
-    #         print('Could not created tree')
+    def _process_the_tree(self, tree: Tree):
+        # data_to_dump = {'tree_as_list': tuple(tree.get_tree_as_list())} # with null
+        data_to_dump = {'tree_as_list': tuple([i for i in tree.get_tree_as_list() if i])}
+        return data_to_dump
     
-    def print_tree(self, _id: int):
-        self.list_of_trees[_id].pretty_print_tree()    
+    def write_tree_to_json_file_as_list(self, tree: Tree, path: str):
+        try:
+            data_to_dump = self._process_the_tree(tree)
+            file_handler.write_json_file(path, data_to_dump)
+            return True
+        except:
+            print('Error: cannot write the data to the file.')
+        return None
+    
+    def write_tree_to_json_file_as_list_wo_indent(self, tree: Tree, path: str):
+        try:
+            data_to_dump = self._process_the_tree(tree)
+            file_handler.write_json_file_wo_indent(path, data_to_dump)
+            return True
+        except:
+            print('Error: cannot write the data to the file.')
+        return None
+
+    def read_tree_from_json_file(self, path: str):
+        try:
+            data = file_handler.read_json_file(path)
+            tree_validator = TreeValidator(data)
+            return self._create_tree_out_of_the_list(tree_validator.tree_as_list)
+        except:
+            print('Error: cannot read the data from the file.')
+        return None
+        
+    def print_tree(self, tree: Tree):
+        # pretty_print to the text_edit
+        pass
 
 
 def demo():
@@ -432,7 +458,7 @@ if __name__ == "__main__":
     
     print()
     tm = TreeManager()
-    _t = tm.create_new_random_tree('stri', 50)
+    _t = tm.create_new_random_tree('str', 50)
     if _t:
         _t.pretty_print_tree()
     
