@@ -12,6 +12,16 @@ class FileHandler():
         for k, v in data.items():
                     print('{}: {}'.format(k, v))
     
+    def write_list_to_file(self, path: str, tree_as_list: list):
+        try:
+            with open(path, 'w', encoding="utf-8") as f:
+                for item in tree_as_list:
+                    f.write("{}\n".format(item))
+        except:
+            print("Error: cannot write the data to the file with this path:")
+            print("Path: " + str(path))
+        return None
+    
     def write_json_file(self, path: str, data: dict, indent=4):
         try:
             with open(path, 'w') as f:
@@ -124,20 +134,30 @@ class Tree:
         if not node:
             print("Empty Tree")
             return
-
         if node.r:
             self._pretty_print_tree(
                 node.r, prefix + ("│   " if isLeft else "    "), False)
-
-        # original
         print(prefix + ("└── " if isLeft else "┌── ") + str(node.v))
-        
-        # debug
-        # print(prefix + ("└── " if isLeft else "┌── ") + str(node.v) + ' (' +str(type(node.v)) +')')
-
         if node.l:
             self._pretty_print_tree(
                 node.l, prefix + ("    " if isLeft else "│   "), True)
+
+    def _pretty_print_tree_to_the_list(self, list_to_print, node, prefix="", isLeft=True):
+        if not node:
+            print("Empty Tree")
+            return
+        if node.r:
+            self._pretty_print_tree_to_the_list(
+                list_to_print, node.r, prefix + ("│   " if isLeft else "    "), False)
+        list_to_print.append(prefix + ("└── " if isLeft else "┌── ") + str(node.v))
+        if node.l:
+            self._pretty_print_tree_to_the_list(
+                list_to_print, node.l, prefix + ("    " if isLeft else "│   "), True)
+
+    def pretty_print_tree_to_the_list(self):
+        list_to_print = []
+        self._pretty_print_tree_to_the_list(list_to_print, self.root)
+        return list_to_print
 
     def get_tree_as_list(self):
         size = 0
@@ -372,7 +392,7 @@ class TreeManager:
         try:
             data_to_dump = self._process_the_tree(tree)
             self.file_handler.write_json_file(path, data_to_dump)
-            return True
+            return 
         except:
             print('Error: Cannot write the data to the file.')
         return None
@@ -381,7 +401,16 @@ class TreeManager:
         try:
             data_to_dump = self._process_the_tree(tree)
             self.file_handler.write_json_file_wo_indent(path, data_to_dump)
-            return True
+            return 
+        except:
+            print('Error: Cannot write the data to the file.')
+        return None
+
+    def write_tree_to_file_as_tree(self, tree: Tree, path: str):
+        try:
+            tree_as_list = tree.pretty_print_tree_to_the_list()  
+            self.file_handler.write_list_to_file(path, tree_as_list)
+            return 
         except:
             print('Error: Cannot write the data to the file.')
         return None
@@ -394,10 +423,6 @@ class TreeManager:
         except:
             print('Error: Cannot read the data from the file.')
         return None
-        
-    def print_tree(self, tree: Tree):
-        # pretty_print to the text_edit
-        pass
 
 
 def demo_0():
@@ -453,12 +478,14 @@ def demo_1():
     # =================
     print()
     tm = TreeManager()
-    t = tm.create_new_random_tree('str', 50)
+    t = tm.create_new_random_tree('int', 50)
     # if t:
     #     t.pretty_print_tree()
-    # tm.write_tree_to_json_file_as_list(t, '0.json')
-    t_0 = tm.read_tree_from_json_file('0.json')
-    t_0.pretty_print_tree()
+    tm.write_tree_to_json_file_as_list(t, 'saved_tree.json')
+    t_0 = tm.read_tree_from_json_file('saved_tree.json')
+    # t_0.pretty_print_tree()
+    tm.write_tree_to_file_as_tree(t_0, 'saved_tree.txt')
+
 
 if __name__ == "__main__":
     
