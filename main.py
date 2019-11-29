@@ -285,10 +285,12 @@ class Tree:
 
 
 class TreeValidator:
-    def __init__(self, raw_data):
+    def __init__(self, raw_data: dict, key: str):
         super().__init__()
-        self._valid_input = True
         self.tree_as_list = None
+        
+        self._valid_input = True
+        self._key = key
         
         data = self._check_validation_of_main_components(raw_data)
         if data:
@@ -297,12 +299,12 @@ class TreeValidator:
             self._valid_input = False
     
     def _init(self, data: dict):
-        self.tree_as_list = data['tree_as_list'] 
+        self.tree_as_list = data[self._key] 
     
     def _check_validation_of_main_components(self, raw_data: dict):
         try:
             dict_to_return = {
-                'tree_as_list': raw_data['tree_as_list']
+                self._key: raw_data[self._key]
             }
             return dict_to_return
         except:
@@ -315,6 +317,7 @@ class TreeManager:
         super().__init__()
         self.file_handler = FileHandler()
         
+        self._key = 'tree_as_list' # for json format, saves the tree as list with name '_key'
         self._from = 0
         self._to = 30
         self._min_number_of_elements = 0
@@ -371,14 +374,14 @@ class TreeManager:
         return None
     
     def _process_the_tree(self, tree: Tree):
-        # data_to_dump = {'tree_as_list': tuple(tree.get_tree_as_list())} # with null
-        data_to_dump = {'tree_as_list': tuple([i for i in tree.get_tree_as_list() if i])}
+        # data_to_dump = {self._key: tuple(tree.get_tree_as_list())} # with null
+        data_to_dump = {self._key: tuple([i for i in tree.get_tree_as_list() if i])}
         return data_to_dump
     
     def write_tree_to_json_file_as_list(self, tree: Tree, path: str):
         try:
             data_to_dump = self._process_the_tree(tree)
-            file_handler.write_json_file(path, data_to_dump)
+            self.file_handler.write_json_file(path, data_to_dump)
             return True
         except:
             print('Error: cannot write the data to the file.')
@@ -387,7 +390,7 @@ class TreeManager:
     def write_tree_to_json_file_as_list_wo_indent(self, tree: Tree, path: str):
         try:
             data_to_dump = self._process_the_tree(tree)
-            file_handler.write_json_file_wo_indent(path, data_to_dump)
+            self.file_handler.write_json_file_wo_indent(path, data_to_dump)
             return True
         except:
             print('Error: cannot write the data to the file.')
@@ -395,8 +398,8 @@ class TreeManager:
 
     def read_tree_from_json_file(self, path: str):
         try:
-            data = file_handler.read_json_file(path)
-            tree_validator = TreeValidator(data)
+            data = self.file_handler.read_json_file(path)
+            tree_validator = TreeValidator(data, self._key)
             return self._create_tree_out_of_the_list(tree_validator.tree_as_list)
         except:
             print('Error: cannot read the data from the file.')
@@ -407,7 +410,7 @@ class TreeManager:
         pass
 
 
-def demo():
+def demo_0():
     # =================
     # just a demo 
     # =================
@@ -454,13 +457,31 @@ def demo():
     print("Process time: " + str(time.time() - start))  # Process time: 0.007252693176269531
 
 
+def demo_1():
+    # =================
+    # just a demo 
+    # =================
+    print()
+    tm = TreeManager()
+    t = tm.create_new_random_tree('str', 50)
+    # if t:
+    #     t.pretty_print_tree()
+    tm.write_tree_to_json_file_as_list(t, '0.json')
+    t_0 = tm.read_tree_from_json_file('0.json')
+    t_0.pretty_print_tree()
+
 if __name__ == "__main__":
     
     print()
-    tm = TreeManager()
-    _t = tm.create_new_random_tree('str', 50)
-    if _t:
-        _t.pretty_print_tree()
+    
+    demo_1()
+    
+    # ================
+    
+    # tm = TreeManager()
+    # _t = tm.create_new_random_tree('str', 50)
+    # tm.write_tree_to_json_file_as_list(_t, '0.json')
+    # tm.read_tree_from_json_file('0.json')
     
     # =================
     
