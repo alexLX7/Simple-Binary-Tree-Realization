@@ -343,16 +343,22 @@ class TreeManager:
         return ''.join(random.SystemRandom().choice(
             string.ascii_uppercase + string.digits) for _ in range(size))
     
+    def _validate_number_of_elements(self, number_of_elements: int):
+        if 0 < number_of_elements < 1024: 
+            return number_of_elements
+        return None
+    
     def create_new_random_tree(self, type_to_check: str, number_of_elements: int):
         try:
-            if type_to_check == 'int':
-                self._list = self._generate_list_of_int_with_repetitions(number_of_elements) 
-            if type_to_check == 'str':
-                self._list = self._generate_list_of_strings(number_of_elements)    
-            if type_to_check == 'float':
-                self._list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
-            for i, v in enumerate(self._list):
-                self.tree.add(v)
+            if self._validate_number_of_elements(number_of_elements):
+                if type_to_check == 'int':
+                    self._list = self._generate_list_of_int_with_repetitions(number_of_elements) 
+                if type_to_check == 'str':
+                    self._list = self._generate_list_of_strings(number_of_elements)    
+                if type_to_check == 'float':
+                    self._list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
+                for i, v in enumerate(self._list):
+                    self.tree.add(v)
         except:
             print('Error: Could not generate the list.')
         return self.tree
