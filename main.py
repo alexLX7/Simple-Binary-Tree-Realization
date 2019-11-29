@@ -333,25 +333,32 @@ class TreeManager:
             print('Error: Input is not correct.')
         return None
     
-    def _create_tree_out_of_the_list(self, _list: list):
+    def _create_tree_out_of_the_list_with_validation(self, _list: list):
         _tree = Tree()
         if _list:
             _type = type(_list[0])
-            for i, v in enumerate(_list):
+            for _, v in enumerate(_list):
                 if isinstance(v, _type):
                     _tree.add(v)
         return _tree
+
+    def _create_tree_out_of_the_list_wo_validation(self, _list: list):
+        _tree = Tree()
+        if _list:
+            for _, v in enumerate(_list):
+                _tree.add(v)
+        return _tree
     
-    def create_new_random_tree(self, type_to_check: str, number_of_elements: int):
+    def create_new_random_tree(self, input_type: str, number_of_elements: int):
         try:
             if self._validate_number_of_elements(number_of_elements):
-                if type_to_check == 'int':
+                if input_type == 'int':
                     _list = self._generate_list_of_int_with_repetitions(number_of_elements) 
-                if type_to_check == 'str':
+                if input_type == 'str':
                     _list = self._generate_list_of_strings(number_of_elements)    
-                if type_to_check == 'float':
+                if input_type == 'float':
                     _list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
-                return self._create_tree_out_of_the_list(_list)
+                return self._create_tree_out_of_the_list_wo_validation(_list)
         except:
             print('Error: Could not generate the list.')
         return None
@@ -382,7 +389,8 @@ class TreeManager:
     def read_tree_from_json_file(self, path: str):
         try:
             data = self.file_handler.read_json_file(path)
-            return self._create_tree_out_of_the_list(self._validate_raw_data(data, self._tree_name))
+            return self._create_tree_out_of_the_list_with_validation(
+                self._validate_raw_data(data, self._tree_name))
         except:
             print('Error: Cannot read the data from the file.')
         return None
@@ -448,7 +456,7 @@ def demo_1():
     t = tm.create_new_random_tree('str', 50)
     # if t:
     #     t.pretty_print_tree()
-    # tm.write_tree_to_json_file_as_list(t, '1.json')
+    # tm.write_tree_to_json_file_as_list(t, '0.json')
     t_0 = tm.read_tree_from_json_file('0.json')
     t_0.pretty_print_tree()
 
