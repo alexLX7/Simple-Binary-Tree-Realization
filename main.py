@@ -313,7 +313,8 @@ class TreeValidator:
 class TreeManager:  
     def __init__(self):
         super().__init__()
-        self.tree = Tree()
+        # self.tree = Tree()
+        self.file_handler = FileHandler()
         self._list = None
         self._from = 0
         self._to = 30
@@ -348,20 +349,25 @@ class TreeManager:
             return number_of_elements
         return None
     
+    def _create_tree_out_of_the_list(self, _list: list):
+        tree = Tree()
+        for i, v in enumerate(_list):
+            tree.add(v)
+        return tree
+    
     def create_new_random_tree(self, type_to_check: str, number_of_elements: int):
         try:
             if self._validate_number_of_elements(number_of_elements):
                 if type_to_check == 'int':
-                    self._list = self._generate_list_of_int_with_repetitions(number_of_elements) 
+                    _list = self._generate_list_of_int_with_repetitions(number_of_elements) 
                 if type_to_check == 'str':
-                    self._list = self._generate_list_of_strings(number_of_elements)    
+                    _list = self._generate_list_of_strings(number_of_elements)    
                 if type_to_check == 'float':
-                    self._list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
-                for i, v in enumerate(self._list):
-                    self.tree.add(v)
+                    _list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
+                return self._create_tree_out_of_the_list(_list)
         except:
             print('Error: Could not generate the list.')
-        return self.tree
+        return None
     
     # def create_new_tree_from_imported_list_from_file(self):
     #     tree = self.file_manager.import_from_file()
@@ -426,8 +432,9 @@ if __name__ == "__main__":
     
     print()
     tm = TreeManager()
-    _t = tm.create_new_random_tree('str', 50)
-    _t.pretty_print_tree()
+    _t = tm.create_new_random_tree('stri', 50)
+    if _t:
+        _t.pretty_print_tree()
     
     # =================
     
