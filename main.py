@@ -311,8 +311,8 @@ class TreeManager:
         self._known_types = {"<class 'int'>": int, "<class 'float'>": float, "<class 'str'>": str}
         self._from = 0 # default int/float value of elements for random creation
         self._to = 30 # default int/float value of elements for random creation
-        # self._min_number_of_elements = 0 - 1
-        # self._max_number_of_elements = 1024 - 1
+        self._min_number_of_elements = 0
+        self._max_number_of_elements = 1024 # it is not actual max number
     
     def _generate_list_of_int_with_repetitions(self, number_of_elements: int):
         _list = [random.randint(self._from, self._to) for i in range(number_of_elements)]
@@ -340,9 +340,9 @@ class TreeManager:
             string.ascii_uppercase + string.digits) for _ in range(size))
     
     def _validate_number_of_elements(self, number_of_elements: int):
-        if self._min_number_of_elements < number_of_elements < self._max_number_of_elements: 
+        if self._min_number_of_elements <= number_of_elements < self._max_number_of_elements: 
             return number_of_elements
-        return None
+        return 0
     
     def _validate_raw_data(self, raw_data: dict):
         try:
@@ -374,13 +374,13 @@ class TreeManager:
     
     def create_new_random_tree(self, input_type: str, number_of_elements: int):
         try:
-            # if self._validate_number_of_elements(number_of_elements):
+            _number_of_elements = self._validate_number_of_elements(number_of_elements)
             if input_type == "<class 'int'>":
-                _list = self._generate_list_of_int_with_repetitions(number_of_elements) 
+                _list = self._generate_list_of_int_with_repetitions(_number_of_elements) 
             if input_type == "<class 'str'>":
-                _list = self._generate_list_of_strings(number_of_elements)    
+                _list = self._generate_list_of_strings(_number_of_elements)    
             if input_type == "<class 'float'>":
-                _list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
+                _list = self._generate_list_of_floats_wo_repetitions(_number_of_elements)
             return self._create_tree_out_of_the_list_wo_validation(_list, input_type)
         except:
             print('Error: Could not generate the list.')
@@ -484,7 +484,7 @@ def demo_1():
     # =================
     print()
     tm = TreeManager()
-    t = tm.create_new_random_tree("<class 'str'>", 0)
+    t = tm.create_new_random_tree("<class 'str'>", 10)
     # if t:
     #     t.pretty_print_tree()
     tm.write_tree_to_json_file_as_list(t, 'saved_tree.json')
