@@ -141,7 +141,7 @@ class Tree:
 
     def _pretty_print_tree_to_the_list(self, list_to_print, node, prefix="", isLeft=True):
         if not node:
-            print("Empty Tree")
+            list_to_print.append("Empty Tree")
             return
         if node.r:
             self._pretty_print_tree_to_the_list(
@@ -308,11 +308,11 @@ class TreeManager:
         
         self._tree_name = 'tree_as_list' # for json format, saves tree as list with name '_tree_name'
         self._tree_type = 'tree_type'
-        self._from = 0
-        self._to = 30
-        self._min_number_of_elements = 0
-        self._max_number_of_elements = 1024
         self._known_types = {"<class 'int'>": int, "<class 'float'>": float, "<class 'str'>": str}
+        self._from = 0 # default int/float value of elements for random creation
+        self._to = 30 # default int/float value of elements for random creation
+        # self._min_number_of_elements = 0 - 1
+        # self._max_number_of_elements = 1024 - 1
     
     def _generate_list_of_int_with_repetitions(self, number_of_elements: int):
         _list = [random.randint(self._from, self._to) for i in range(number_of_elements)]
@@ -346,10 +346,8 @@ class TreeManager:
     
     def _validate_raw_data(self, raw_data: dict):
         try:
-            d = {
-                self._tree_type: raw_data[self._tree_type],
-                self._tree_name: raw_data[self._tree_name]
-            }
+            d = {self._tree_type: raw_data[self._tree_type],
+                self._tree_name: raw_data[self._tree_name]}
             return d
         except:
             print('Error: Input is not correct.')
@@ -376,14 +374,14 @@ class TreeManager:
     
     def create_new_random_tree(self, input_type: str, number_of_elements: int):
         try:
-            if self._validate_number_of_elements(number_of_elements):
-                if input_type == "<class 'int'>":
-                    _list = self._generate_list_of_int_with_repetitions(number_of_elements) 
-                if input_type == "<class 'str'>":
-                    _list = self._generate_list_of_strings(number_of_elements)    
-                if input_type == "<class 'float'>":
-                    _list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
-                return self._create_tree_out_of_the_list_wo_validation(_list, input_type)
+            # if self._validate_number_of_elements(number_of_elements):
+            if input_type == "<class 'int'>":
+                _list = self._generate_list_of_int_with_repetitions(number_of_elements) 
+            if input_type == "<class 'str'>":
+                _list = self._generate_list_of_strings(number_of_elements)    
+            if input_type == "<class 'float'>":
+                _list = self._generate_list_of_floats_wo_repetitions(number_of_elements)
+            return self._create_tree_out_of_the_list_wo_validation(_list, input_type)
         except:
             print('Error: Could not generate the list.')
         return None
@@ -486,7 +484,7 @@ def demo_1():
     # =================
     print()
     tm = TreeManager()
-    t = tm.create_new_random_tree("<class 'str'>", 50)
+    t = tm.create_new_random_tree("<class 'str'>", 0)
     # if t:
     #     t.pretty_print_tree()
     tm.write_tree_to_json_file_as_list(t, 'saved_tree.json')
