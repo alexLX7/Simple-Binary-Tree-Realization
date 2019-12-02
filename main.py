@@ -1,5 +1,4 @@
 import random
-import time
 import json
 import string
 
@@ -431,53 +430,6 @@ class TreeManager:
         return None
 
 
-def demo_0():
-    # =================
-    # just a demo 
-    # =================
-    start = time.time()
-
-    # samples
-    # int with repetitions
-    # _list = [random.randint(15, 25) for x in range(15)]
-    # _list = [random.randint(1, 1000) for x in range(1000)]
-    # int
-    # _list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 21, 22, 23, 24, 25, 36, 37, 38, 39]
-    # _list = [21, 20, 18, 20, 19, 23, 20, 21, 17, 19, 19, 22, 17, 16, 17]
-    _list = [20, 21, 20, 18, 19, 23, 21, 22, 20, 24, 17, 19, 21, 20, 19, 18, 22, 17, 20, 16, 17]
-    # int without repeat
-    # _list = random.sample(range(1,20), 10)
-    # floats
-    # _list = sample_floats(0, 10, 20) # this function is now a method in TreeManager Class which is under construction
-    # strings
-    # _list = ['ha', 'hc', 'hp', 'ah', 'b', 'y', 'hp', 'f', 'a', 'c', 'x']
-    
-    t = Tree()
-    print(_list)
-    print()
-    for i, v in enumerate(_list):
-        t.add(v)
-
-    # print before deletion
-    t.pretty_print_tree()    
-
-    print('Tried to delete Nodes with value "21" 4 times')
-    t.delete_node(t.root, 21)
-    t.delete_node(t.root, 21)
-    t.delete_node(t.root, 21)  # deleted all 3 Nodes with value 21
-    t.delete_node(t.root, 21)  # wouldn't do anything if there is no any Node with this value
-    print()
-    
-    # print after deletion
-    t.pretty_print_tree()    
-
-    # freq
-    t.print_most_frequent_element()
-    print()
-    t.print_list_of_frequency()
-    print("Process time: " + str(time.time() - start))  # Process time: 0.007252693176269531
-
-
 def demo_1():
     # =================
     # just a demo 
@@ -485,8 +437,6 @@ def demo_1():
     print()
     tm = TreeManager()
     t = tm.create_new_random_tree("<class 'str'>", 10)
-    # if t:
-    #     t.pretty_print_tree()
     tm.write_tree_to_json_file_as_list(t, 'saved_tree.json')
     t_0 = tm.read_tree_from_json_file('saved_tree.json')
     # t_0.pretty_print_tree()
@@ -498,41 +448,6 @@ if __name__ == "__main__":
     print()
     
     demo_1()
-    
-    # ================
-    
-    # tm = TreeManager()
-    # _t = tm.create_new_random_tree('str', 50)
-    # tm.write_tree_to_json_file_as_list(_t, '0.json')
-    # tm.read_tree_from_json_file('0.json')
-    
-    # =================
-    
-    # _list = [20, 21, 20, 18, 19, 23, 21, 22, 20, 24, 17, 19, 21, 20, 19, 18, 22, 17, 20, 16, 17]
-    
-    # # _list = [random.randint(1, 1000) for x in range(500)]
-    
-    # t = Tree()
-    # for i, v in enumerate(_list):
-    #     t.add(v)
-    # # t.pretty_print_tree()
-
-    # # data_to_dump = {'tree_as_list': tuple(t.get_tree_as_list())} # with null
-    # data_to_dump = {'tree_as_list': tuple([i for i in t.get_tree_as_list() if i])}
-    
-    # file_handler = FileHandler()
-    # # file_handler.print_data(data_to_dump)
-    # file_handler.write_json_file('input_0.json', data_to_dump)
-    # file_handler.write_json_file_wo_indent('input_1.json', data_to_dump)
-    # data = file_handler.read_json_file('input_1.json')
-    
-    # tree_validator = TreeValidator(data)
-    # t_2 = Tree()
-    # for i, v in enumerate(tree_validator.tree_as_list):
-    #     # print(v)
-    #     if v:
-    #         t_2.add(v)
-    # # t_2.pretty_print_tree()
     
     # =================
     # Design of possible GUI
