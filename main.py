@@ -257,20 +257,22 @@ class Tree:
     def _most_frequent(self):
         # iterate over all nodes
         list_of_frequency = []
-        self.print_leaves_without_nodes(self.root)
+        self.print_leaves_without_nodes(self.root, list_of_frequency)
+        print(list_of_frequency)
         return list_of_frequency
     
-    def print_leaves_without_nodes(self, node: Node):
+    def print_leaves_without_nodes(self, node: Node, l: list):
         if not node:
             return
-        if (not node.l and not node.r):
-            # cout << root->data << " ";  
+        if not node.l and not node.r:
             print(node.v)
             return
-        if (node.l):
-            self.print_leaves_without_nodes(node.l)
-        if (node.r):
-            self.print_leaves_without_nodes(node.r) 
+        if node.l:
+            l.append(node.l)
+            self.print_leaves_without_nodes(node.l, l)
+        if node.r:
+            l.append(node.r)
+            self.print_leaves_without_nodes(node.r, l) 
     
     def _most_frequent_(self):
         # iterate over tree as list, not efficient
