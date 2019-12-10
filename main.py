@@ -254,28 +254,36 @@ class Tree:
             print("Haven't found.")
             return None
     
-    def _most_frequent(self):
-        # iterate over all nodes
-        list_of_frequency = []
-        self.print_leaves_without_nodes(self.root, list_of_frequency)
-        print(list_of_frequency)
-        return list_of_frequency
+    def get_list_of_nodes_by_iteration_over_tree(self):
+        tree_as_list = []
+        self._iterate_over_all_nodes(self.root, tree_as_list)
+        # print(tree_as_list)
+        return tree_as_list
     
-    def print_leaves_without_nodes(self, node: Node, l: list):
+    def _iterate_over_all_nodes(self, node: Node, l: list):
+        if not node:
+            return
+        if not node.l and not node.r:
+            return
+        if node.l:
+            l.append(node.l)
+            self._iterate_over_all_nodes(node.l, l)
+        if node.r:
+            l.append(node.r)
+            self._iterate_over_all_nodes(node.r, l) 
+            
+    def print_leaves_without_nodes(self, node: Node):
         if not node:
             return
         if not node.l and not node.r:
             print(node.v)
             return
         if node.l:
-            l.append(node.l)
-            self.print_leaves_without_nodes(node.l, l)
+            self.print_leaves_without_nodes(node.l)
         if node.r:
-            l.append(node.r)
-            self.print_leaves_without_nodes(node.r, l) 
+            self.print_leaves_without_nodes(node.r) 
     
-    def _most_frequent_(self):
-        # iterate over tree as list, not efficient
+    def _process_frequency(self):
         d = {}
         tree_as_list = self.get_tree_as_list()
         count, itm = 0, ''
@@ -284,9 +292,12 @@ class Tree:
                 d[item] = d.get(item, 0) + 1
                 if d[item] >= count:
                     count, itm = d[item], item
-                    
+        return d
+    
+    def _get_list_of_frequency(self):
+        dict_frequency = self._process_frequency()     
         raw_list_of_frequency = []
-        for key, value in sorted(d.items(), key=lambda item: item[1]):
+        for key, value in sorted(dict_frequency.items(), key=lambda item: item[1]):
             raw_list_of_frequency.append([key, value])
 
         list_of_frequency = []
@@ -296,7 +307,7 @@ class Tree:
         return list_of_frequency
     
     def print_most_frequent_element(self):
-        list_of_frequency = self._most_frequent()
+        list_of_frequency = self._get_list_of_frequency()
         if list_of_frequency:
             print('Value: ' + str(list_of_frequency[-1][0]))
             print('Frequency: ' + str(list_of_frequency[-1][1]))
@@ -304,7 +315,7 @@ class Tree:
             print('list_of_frequency is empty')
     
     def print_list_of_frequency(self):
-        list_of_frequency = self._most_frequent()
+        list_of_frequency = self._get_list_of_frequency()
         if list_of_frequency:
             for v in reversed(list_of_frequency):
                 print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
