@@ -86,6 +86,70 @@ class Tree:
             else:
                 node.r = Node(val)
 
+    '''
+    Node getLeftMost(Node n)
+        WHILE (n.leftChild != NULL)
+            n = n.leftChild
+        RETURN n
+
+    Node getFirst(Tree t)
+        IF (t.root == NULL) RETURN NULL
+        ELSE
+            RETURN getLeftMost(t.root);
+
+    Node getNext(Node n)
+        IF (n.rightChild != NULL)
+            RETURN getLeftMost(n.rightChild)
+        ELSE
+            WHILE (n.parent != NULL AND n == n.parent.rightChild)
+                n = n.parent;
+            RETURN n.parent;
+
+    PROCEDURE iterateOver(Tree t)
+        Node n = getFirst(t);
+        WHILE n != NULL
+            visit(n)
+            n = getNext(n)
+    '''
+
+    # def getLeftMost(self, node):
+    #     while node.l:
+    #         node = node.l
+    #     return node
+    
+    # def getFirst(self, t: Tree):
+    #     if(self.root != None):
+    #         return self.getLeftMost(t.root)
+    #     else:
+    #         return None
+            
+    # def getNext(self, node):
+    #     if node.r:
+    #         return self.getLeftMost(node.r)
+    #     else:
+    #         while (node.r and node.l and node.)
+    #     IF (n.rightChild != NULL)
+    #         RETURN getLeftMost(n.rightChild)
+    #     ELSE
+    #         WHILE (n.parent != NULL AND n == n.parent.rightChild)
+    #             n = n.parent;
+    #         RETURN n.parent;(self, parameter_list):
+    #     pass
+
+    # def f(self):
+    #     result = []
+    #     stack = [self.root]
+    #     while stack:
+    #         stack[-1].visited = True
+    #         if stack[-1].l != None and not stack[-1].l.visited:
+    #             stack.append(stack[-1].l)
+    #         else:
+    #             node = stack.pop()
+    #             result.append(node)
+    #             if stack[-1].r != None:
+    #                 stack.append(stack[-1].r)
+    #     print(result)
+
     def find(self, val):
         if(self.root != None):
             return self._find(val, self.root)
@@ -254,13 +318,25 @@ class Tree:
             print("Haven't found.")
             return None
     
-    def _most_frequent_(self):
+    def _most_frequent(self):
         # iterate over all nodes
         list_of_frequency = []
-        
+        self.print_leaves_without_nodes(self.root)
         return list_of_frequency
-        
-    def _most_frequent(self):
+    
+    def print_leaves_without_nodes(self, node: Node):
+        if not node:
+            return
+        if (not node.l and not node.r):
+            # cout << root->data << " ";  
+            print(node.v)
+            return
+        if (node.l):
+            self.print_leaves_without_nodes(node.l)
+        if (node.r):
+            self.print_leaves_without_nodes(node.r) 
+    
+    def _most_frequent_(self):
         # iterate over tree as list, not efficient
         d = {}
         tree_as_list = self.get_tree_as_list()
@@ -440,7 +516,7 @@ def demo_1():
     # t_0.pretty_print_tree()
     # tm.write_tree_to_file_as_tree(t_0, 'saved_tree.txt')
     
-    t_0.print_most_frequent_element()
+    # t_0.print_most_frequent_element()
     t_0.print_list_of_frequency()
 
 
