@@ -253,34 +253,32 @@ class Tree:
         else:
             print("Haven't found.")
             return None
+    
+    def _most_frequent_(self):
+        # iterate over all nodes
+        list_of_frequency = []
+        
+        return list_of_frequency
         
     def _most_frequent(self):
+        # iterate over tree as list, not efficient
         d = {}
-        List = self.get_tree_as_list()
+        tree_as_list = self.get_tree_as_list()
         count, itm = 0, ''
-        for item in reversed(List):
+        for item in reversed(tree_as_list):
             if item:
                 d[item] = d.get(item, 0) + 1
                 if d[item] >= count:
                     count, itm = d[item], item
-
-        # print(itm)
-        # print(count)
-        # print()
-
+                    
         raw_list_of_frequency = []
         for key, value in sorted(d.items(), key=lambda item: item[1]):
-            # print("%s: %s" % (key, value))
             raw_list_of_frequency.append([key, value])
 
         list_of_frequency = []
         for v in raw_list_of_frequency:
             list_of_frequency.append([v[0], v[1]])
         
-        # for v in reversed(raw_list_of_frequency):
-        #     list_of_frequency.append([v[0], v[1]])
-        #     # print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
-
         return list_of_frequency
     
     def print_most_frequent_element(self):
@@ -436,17 +434,20 @@ def demo_1():
     # =================
     print()
     tm = TreeManager()
-    t = tm.create_new_random_tree("<class 'str'>", 10)
-    tm.write_tree_to_json_file_as_list(t, 'saved_tree.json')
+    # t = tm.create_new_random_tree("<class 'int'>", 10)
+    # tm.write_tree_to_json_file_as_list(t, 'saved_tree.json')
     t_0 = tm.read_tree_from_json_file('saved_tree.json')
     # t_0.pretty_print_tree()
-    tm.write_tree_to_file_as_tree(t_0, 'saved_tree.txt')
+    # tm.write_tree_to_file_as_tree(t_0, 'saved_tree.txt')
+    
+    t_0.print_most_frequent_element()
+    t_0.print_list_of_frequency()
 
 
 if __name__ == "__main__":
     
     print()
-    
+    # test 123
     demo_1()
     
     # =================

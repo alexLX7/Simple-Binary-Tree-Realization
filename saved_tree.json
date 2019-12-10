@@ -1,15 +1,15 @@
 {
-    "tree_type": "<class 'str'>",
+    "tree_type": "<class 'int'>",
     "tree_as_list": [
-        "MHRYYO1U",
-        "64EYAR3J",
-        "XLTQ2ERI",
-        "2P4LMXEN",
-        "DA5COJRI",
-        "NO1T6X4A",
-        "409AZB2R",
-        "K3FEKQOQ",
-        "V4QQRVGS",
-        "TXB5JYCV"
+        6,
+        2,
+        13,
+        5,
+        8,
+        22,
+        3,
+        20,
+        22,
+        30
     ]
 }
