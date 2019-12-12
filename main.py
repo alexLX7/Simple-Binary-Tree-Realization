@@ -453,55 +453,20 @@ class TreeManager:
         return None
 
 
-def demo_1():
-    # =================
-    # just a demo 
-    # =================
-    print()
-    tm = TreeManager()
-    # t = tm.create_new_random_tree("<class 'int'>", 10)
-    # tm.write_tree_to_json_file_as_list(t, 'saved_tree.json')
-    t_0 = tm.read_tree_from_json_file('saved_tree.json')
-    # t_0.pretty_print_tree()
-    # tm.write_tree_to_file_as_tree(t_0, 'saved_tree.txt')
+def demo():
     
-    # t_0.print_most_frequent_element()
-    t_0.print_list_of_frequency()
+    tree_manager = TreeManager()
+    tree_0 = tree_manager.create_new_random_tree("<class 'int'>", 10)
+    tree_manager.write_tree_to_json_file_as_list(tree_0, 'saved_tree.json')
+    tree_1 = tree_manager.read_tree_from_json_file('saved_tree.json')
+    tree_manager.write_tree_to_file_as_tree(tree_1, 'saved_tree.txt')
+    
+    tree_1.pretty_print_tree()
+    tree_1.print_most_frequent_element()
+    tree_1.print_list_of_frequency()
 
 
 if __name__ == "__main__":
     
-    print()
-
-    demo_1()
+    demo()
     
-    # =================
-    # Design of possible GUI
-    # leftside dock 
-    # buttons:
-    #
-    # -trees-
-    # buttons below
-    # create tree from scratch
-    # import tree from file
-    # buttons for each tree instance
-    # print tree to file as list
-    # print tree to file as tree
-    # delete current tree
-    #
-    # -nodes- (for each tree)
-    # add node
-    # delete node
-    # check existance of node
-    #
-    # -functions- (for each tree)
-    # print most freq element
-    # print freq for current tree
-    # 
-    # 
-    # rightside subwindow
-    # textedit:
-    # 
-    # be able to clear textedit
-    # readonly
-    # =================
