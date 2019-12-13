@@ -68,11 +68,41 @@ class Tree:
     def get_root(self):
         return self.root
 
+    def _check_type_of_element(self, val):
+        if self._type == int:
+            # print(self._type)
+            # print(str(type(int)))
+            return self._try_to_cast_int(val)
+        if self._type == float:
+            return self._try_to_cast_float(val)
+        if self._type == str:
+            return self._try_to_cast_str(val)
+
+    def _try_to_cast_int(self, val):
+        try:
+            return int(val)
+        except:
+            return None
+    
+    def _try_to_cast_float(self, val):
+        try:
+            return float(val)
+        except:
+            return None
+            
+    def _try_to_cast_str(self, val):
+        try:
+            return str(val)
+        except:   
+            return None 
+
     def add(self, val):
-        if(self.root == None):
-            self.root = Node(val)
-        else:
-            self._add(val, self.root)
+        value = self._check_type_of_element(val)
+        if value:
+            if(self.root == None):
+                self.root = Node(value)
+            else:
+                self._add(value, self.root)
 
     def _add(self, val, node):
         if(val < node.v):
@@ -223,25 +253,27 @@ class Tree:
             current = current.l  
         return current  
     
-    def delete_node(self, root, key): 
+    def delete_node(self, root, val): 
         if not root: 
             return root  
-        if key < root.v: 
-            root.l = self.delete_node(root.l, key) 
-        elif(key > root.v): 
-            root.r = self.delete_node(root.r, key) 
-        else: 
-            if not root.l: 
-                temp = root.r  
-                root = None 
-                return temp  
-            elif not root.r: 
-                temp = root.l 
-                root = None
-                return temp 
-            temp = self.min_value_node(root.r) 
-            root.v = temp.v 
-            root.r = self.delete_node(root.r , temp.v) 
+        key = self._check_type_of_element(val)
+        if key:
+            if key < root.v: 
+                root.l = self.delete_node(root.l, key) 
+            elif(key > root.v): 
+                root.r = self.delete_node(root.r, key) 
+            else: 
+                if not root.l: 
+                    temp = root.r  
+                    root = None 
+                    return temp  
+                elif not root.r: 
+                    temp = root.l 
+                    root = None
+                    return temp 
+                temp = self.min_value_node(root.r) 
+                root.v = temp.v 
+                root.r = self.delete_node(root.r , temp.v) 
         return root  
 
     def search(self, value_to_seach):
@@ -456,11 +488,12 @@ class TreeManager:
 def demo():
     
     tree_manager = TreeManager()
-    tree_0 = tree_manager.create_new_random_tree("<class 'int'>", 10)
-    tree_manager.write_tree_to_json_file_as_list(tree_0, 'saved_tree.json')
+    # tree_0 = tree_manager.create_new_random_tree("<class 'int'>", 10)
+    # tree_manager.write_tree_to_json_file_as_list(tree_0, 'saved_tree.json')
     tree_1 = tree_manager.read_tree_from_json_file('saved_tree.json')
-    tree_manager.write_tree_to_file_as_tree(tree_1, 'saved_tree.txt')
-    
+    # tree_manager.write_tree_to_file_as_tree(tree_1, 'saved_tree.txt')
+    tree_1.add('123')
+    tree_1.delete_node(tree_1.root, '123')
     tree_1.pretty_print_tree()
     tree_1.print_most_frequent_element()
     tree_1.print_list_of_frequency()

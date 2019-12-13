@@ -74,11 +74,39 @@ class Tree:
     def get_root(self):
         return self.root
 
+    def _check_type_of_element(self, val):
+        if self._type == int:
+            return self._try_to_cast_int(val)
+        if self._type == float:
+            return self._try_to_cast_float(val)
+        if self._type == str:
+            return self._try_to_cast_str(val)
+
+    def _try_to_cast_int(self, val):
+        try:
+            return int(val)
+        except:
+            return None
+    
+    def _try_to_cast_float(self, val):
+        try:
+            return float(val)
+        except:
+            return None
+            
+    def _try_to_cast_str(self, val):
+        try:
+            return str(val)
+        except:   
+            return None 
+
     def add(self, val):
-        if(self.root == None):
-            self.root = Node(val)
-        else:
-            self._add(val, self.root)
+        value = self._check_type_of_element(val)
+        if value:
+            if(self.root == None):
+                self.root = Node(value)
+            else:
+                self._add(value, self.root)
 
     def _add(self, val, node):
         if(val < node.v):
@@ -246,25 +274,27 @@ class Tree:
             current = current.l  
         return current  
     
-    def delete_node(self, root, key): 
+    def delete_node(self, root, val): 
         if not root: 
             return root  
-        if key < root.v: 
-            root.l = self.delete_node(root.l, key) 
-        elif(key > root.v): 
-            root.r = self.delete_node(root.r, key) 
-        else: 
-            if not root.l: 
-                temp = root.r  
-                root = None 
-                return temp  
-            elif not root.r: 
-                temp = root.l 
-                root = None
-                return temp 
-            temp = self.min_value_node(root.r) 
-            root.v = temp.v 
-            root.r = self.delete_node(root.r , temp.v) 
+        key = self._check_type_of_element(val)
+        if key:
+            if key < root.v: 
+                root.l = self.delete_node(root.l, key) 
+            elif(key > root.v): 
+                root.r = self.delete_node(root.r, key) 
+            else: 
+                if not root.l: 
+                    temp = root.r  
+                    root = None 
+                    return temp  
+                elif not root.r: 
+                    temp = root.l 
+                    root = None
+                    return temp 
+                temp = self.min_value_node(root.r) 
+                root.v = temp.v 
+                root.r = self.delete_node(root.r , temp.v) 
         return root  
 
     def search(self, value_to_seach):
@@ -498,7 +528,7 @@ class GlobalVariables:
             create_int_tree = 'Create tree (int)',
             create_float_tree = 'Create tree (float)',
             create_str_tree = 'Create tree (str)',
-            pretty_print_tree_to_text_edit = 'Print the tree (to the text edit)',
+            pretty_print_tree_to_text_edit = 'Print the tree to the text edit',
             delete_tree = 'Delete the tree',
             confirm_your_choice = 'Confirm Your choice',
             are_you_sure_you_want_to_delete = 'Are you sure you want to delete all instances?',
@@ -531,7 +561,7 @@ class GlobalVariables:
             create_int_tree = 'Создать дерево (int)',
             create_float_tree = 'Создать дерево (float)',
             create_str_tree = 'Создать дерево (str)',
-            pretty_print_tree_to_text_edit = 'Отобразить дерево (в окне вывода)',
+            pretty_print_tree_to_text_edit = 'Отобразить дерево в окне вывода',
             delete_tree = 'Удалить дерево',
             confirm_your_choice = 'Подтвердите свой выбор',
             are_you_sure_you_want_to_delete = 'Вы уверены, что хотите удалить все объекты?',
@@ -556,6 +586,7 @@ class MenuInstance:
         # 'hide' is used as example of how to connect gui and logic parts
         self.tree = Tree("<class 'int'>")
         self.number_of_elements = 0
+        self.element_name = ''
     
 
 class GrowingTextEdit(QtWidgets.QTextEdit):
@@ -869,6 +900,7 @@ class Application(QtWidgets.QMainWindow):
             msg.addButton(self._global_variables.default_dict.get('no'), QMessageBox.RejectRole)
             msg.exec()
             if msg.clickedButton() == okButton:
+                self.text_edit.clear()
                 self.connector.list_of_menu_instances.clear()
                 self.connector.number_of_menu_instances = 0
                 self.connector.current_widget_to_export = None
@@ -942,12 +974,8 @@ class Application(QtWidgets.QMainWindow):
         def button_pretty_print_tree_to_text_edit_clicked(arg):
             print_tree()
         button_pretty_print_tree_to_text_edit.clicked.connect(button_pretty_print_tree_to_text_edit_clicked)
-        vbox.addWidget(button_pretty_print_tree_to_text_edit)
 
-        empty_label = QLabel('')
-        vbox.addWidget(empty_label)
-
-        def set_axis_x_values():
+        def set_number_of_elements():
             spinBox.setMaximum(100)
             if spinBox.value() <= spinBox.value():
                 self.connector.list_of_menu_instances[
@@ -955,7 +983,7 @@ class Application(QtWidgets.QMainWindow):
                         str(spinBox.value()))
 
         spinBox = QSpinBox()
-        spinBox.valueChanged.connect(set_axis_x_values)
+        spinBox.valueChanged.connect(set_number_of_elements)
         vbox.addWidget(spinBox)
 
         button_create_int_tree = QPushButton()
@@ -994,6 +1022,54 @@ class Application(QtWidgets.QMainWindow):
         button_create_str_tree.clicked.connect(button_create_str_tree_clicked)
         vbox.addWidget(button_create_str_tree)
         
+        empty_label_0 = QLabel('')
+        vbox.addWidget(empty_label_0)
+        
+        element_name = GrowingTextEdit()
+        element_name.setText('')
+        # self.connector.list_of_menu_instances[instance_menu.id_of_instance].name = name.toPlainText()
+        element_name.setMinimumHeight(27)
+        element_name.setMaximumHeight(27)
+
+        def element_name_changed(): 
+            try:
+                self.connector.list_of_menu_instances[
+                    instance_menu.id_of_instance].element_name = element_name.toPlainText()
+            except:
+                self.connector.list_of_menu_instances[
+                    instance_menu.id_of_instance].element_name = 'Incorrect symbols in element_name'
+
+        element_name.textChanged.connect(element_name_changed)
+        vbox.addWidget(element_name)
+        
+        button_add_element = QPushButton()
+        button_add_element.setText('add_element')
+            # self._global_variables.default_dict.get('add_element'))
+        def button_add_element_clicked(arg):
+            tree_manager = TreeManager()
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.add(
+                self.connector.list_of_menu_instances[instance_menu.id_of_instance].element_name)
+            element_name.setText('')
+            print_tree()
+        button_add_element.clicked.connect(button_add_element_clicked)
+        vbox.addWidget(button_add_element)
+        
+        button_delete_element = QPushButton()
+        button_delete_element.setText('delete_element')
+            # self._global_variables.default_dict.get('delete_element'))
+        def button_delete_element_clicked(arg):
+            tree_manager = TreeManager()
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.delete_node(
+                self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.root,
+                self.connector.list_of_menu_instances[instance_menu.id_of_instance].element_name)
+            element_name.setText('')
+            print_tree()
+        button_delete_element.clicked.connect(button_delete_element_clicked)
+        vbox.addWidget(button_delete_element)
+        
+        empty_label_1 = QLabel('')
+        vbox.addWidget(empty_label_1)
+        
         button_delete_tree = QPushButton()
         button_delete_tree.setText(
             self._global_variables.default_dict.get('delete_tree'))
@@ -1014,6 +1090,7 @@ class Application(QtWidgets.QMainWindow):
         box = CollapsibleBox(self._global_variables.default_dict.get('additional_options_of_the_instance'))
         
         vlay.addWidget(name)
+        vlay.addWidget(button_pretty_print_tree_to_text_edit)
         vlay.addWidget(box)
         
         verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
@@ -1037,7 +1114,7 @@ class Application(QtWidgets.QMainWindow):
         
     def clear_textedit(self):
         self.text_edit.clear()
-        self.text_edit.setText('hey it works')
+        # self.text_edit.setText('hey it works')
         # print('hey it works')
 
     def close_application(self):
