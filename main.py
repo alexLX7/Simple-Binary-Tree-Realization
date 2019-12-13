@@ -534,7 +534,6 @@ class GlobalVariables:
             are_you_sure_you_want_to_delete = 'Are you sure you want to delete all instances?',
             add_a_new_instance_menu = 'Add a new instance menu',
             delete_all_instances = 'Delete all instances',
-            hide_current_instance = 'Hide current instance',
             confirm_exit = 'Confirm exit',
             are_you_sure_you_want_to_exit = 'Are you sure you want to exit?',
             about_window_title = 'About',
@@ -567,7 +566,6 @@ class GlobalVariables:
             are_you_sure_you_want_to_delete = 'Вы уверены, что хотите удалить все объекты?',
             add_a_new_instance_menu = 'Добавить меню для нового экземпляра объекта',
             delete_all_instances = 'Удалить все экземпляры объектов',
-            hide_current_instance = 'Скрыть данный экземпляр объекта',
             confirm_exit = 'Подтвердите выход',
             are_you_sure_you_want_to_exit = 'Вы уверены, что хотите выйти?',
             about_window_title = 'Об авторе',
@@ -582,9 +580,7 @@ class MenuInstance:
         self._global_variables = GlobalVariables()
         self.id_of_instance = 0  # without id you couldn't get proper instance by call from another class
         self.name = self._global_variables.default_dict.get('instance')  # name of the instance
-        self.hide = False  # field gives ability to hide instance
-        # 'hide' is used as example of how to connect gui and logic parts
-        self.tree = Tree("<class 'int'>")
+        self.tree = Tree(int)
         self.number_of_elements = 0
         self.element_name = ''
     
@@ -931,15 +927,6 @@ class Application(QtWidgets.QMainWindow):
             self.connector.number_of_menu_instances + 1
         self.connector.list_of_menu_instances.append(instance_menu)
 
-        def checkBox_hide_clicked(arg):
-            if checkBox_hide.isChecked():
-                self.connector.list_of_menu_instances[
-                    instance_menu.id_of_instance].hide = True
-            else:
-                self.connector.list_of_menu_instances[
-                    instance_menu.id_of_instance].hide = False
-            # hide action
-
         frame = QtWidgets.QFrame()
         frame.setFrameStyle(QtWidgets.QFrame.Panel | QtWidgets.QFrame.Plain)
 
@@ -961,7 +948,12 @@ class Application(QtWidgets.QMainWindow):
 
         name.textChanged.connect(name_changed)
 
+        def update_info_label():
+            info_label.setText(str(self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].tree._type))
+
         def print_tree():
+            update_info_label()
             self.text_edit.clear()
             tree_as_list = self.connector.list_of_menu_instances[
                 instance_menu.id_of_instance].tree.pretty_print_tree_to_the_list_double_spaces()
@@ -1079,17 +1071,15 @@ class Application(QtWidgets.QMainWindow):
         button_delete_tree.clicked.connect(button_delete_tree_clicked)
         vbox.addWidget(button_delete_tree)
 
-        checkBox_hide = QCheckBox()
-        checkBox_hide.setText(self._global_variables.default_dict.get('hide_current_instance'))
-        checkBox_hide.setChecked(False)
-        checkBox_hide.toggled.connect(checkBox_hide_clicked)
-        # vbox.addWidget(checkBox_hide)
-
         content = QtWidgets.QWidget()
         vlay = QtWidgets.QVBoxLayout(content)
         box = CollapsibleBox(self._global_variables.default_dict.get('additional_options_of_the_instance'))
         
+        info_label = QLabel('')
+        update_info_label()
+        
         vlay.addWidget(name)
+        vlay.addWidget(info_label)
         vlay.addWidget(button_pretty_print_tree_to_text_edit)
         vlay.addWidget(box)
         
