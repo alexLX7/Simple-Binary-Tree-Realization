@@ -530,6 +530,9 @@ class GlobalVariables:
             create_str_tree = 'Create tree (str)',
             delete_element = 'Delete element',
             add_element = 'Add element',
+            export_tree_as_list = 'Save current tree (as *.json)',
+            export_tree_as_tree = 'Save current tree (as *.txt)',
+            import_tree = 'Import tree from the file',
             tree_type = 'Type of tree elements: ',
             pretty_print_tree_to_text_edit = 'Print the tree to the text edit',
             delete_tree = 'Delete the tree',
@@ -565,6 +568,9 @@ class GlobalVariables:
             create_str_tree = 'Создать дерево (str)',
             delete_element = 'Удалить элемент',
             add_element = 'Добавить элемент',
+            export_tree_as_list = 'Экспортировать дерево (*.json)',
+            export_tree_as_tree = 'Экспортировать дерево (*.txt)',
+            import_tree = 'Импортировать дерево из файла',
             tree_type = 'Тип элементов дерева: ',
             pretty_print_tree_to_text_edit = 'Отобразить дерево в окне вывода',
             delete_tree = 'Удалить дерево',
@@ -1049,8 +1055,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(empty_label_1)
         
         button_import_tree = QPushButton()
-        button_import_tree.setText('button_import_tree')
-            # self._global_variables.default_dict.get('button_import_tree'))
+        button_import_tree.setText(
+            self._global_variables.default_dict.get('import_tree'))
         def button_import_tree_clicked(arg):
             try:
                 filename, _ = QFileDialog.getOpenFileName(self,
@@ -1070,8 +1076,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(button_import_tree)
         
         button_export_tree_as_tree = QPushButton()
-        button_export_tree_as_tree.setText('button_export_tree_as_tree')
-            # self._global_variables.default_dict.get('button_export_tree_as_tree'))
+        button_export_tree_as_tree.setText(
+            self._global_variables.default_dict.get('export_tree_as_tree'))
         def button_export_tree_as_tree_clicked(arg):
             try:
                 name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
@@ -1089,8 +1095,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(button_export_tree_as_tree)
         
         button_export_tree_as_list = QPushButton()
-        button_export_tree_as_list.setText('button_export_tree_as_list')
-            # self._global_variables.default_dict.get('button_export_tree_as_list'))
+        button_export_tree_as_list.setText(
+            self._global_variables.default_dict.get('export_tree_as_list'))
         def button_export_tree_as_list_clicked(arg):
             try:
                 name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
