@@ -359,6 +359,9 @@ class Tree:
         
         return list_of_frequency
     
+    def get_list_of_frequency(self):
+        return list(reversed(self._get_list_of_frequency()))
+    
     def print_most_frequent_element(self):
         list_of_frequency = self._get_list_of_frequency()
         if list_of_frequency:
@@ -955,6 +958,16 @@ class Application(QtWidgets.QMainWindow):
                 instance_menu.id_of_instance].tree.pretty_print_tree_to_the_list_double_spaces()
             for i, v in enumerate(tree_as_list):
                 self.text_edit.append(v)
+                
+        def print_list(list_of_frequency: list, number_of_elements: int):
+            self.text_edit.clear()
+            if list_of_frequency:
+                for i, v in enumerate(list_of_frequency):
+                    if i < number_of_elements:
+                        try:
+                            self.text_edit.append('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
+                        except:
+                            pass
 
         button_pretty_print_tree_to_text_edit = QPushButton()
         button_pretty_print_tree_to_text_edit.setText(
@@ -1088,9 +1101,10 @@ class Application(QtWidgets.QMainWindow):
                     tree_manager = TreeManager()
                     tree_manager.write_tree_to_file_as_tree(self.connector.list_of_menu_instances[
                         instance_menu.id_of_instance].tree, name)
+                    print_tree()    
             except:
                 print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-            print_tree()
+                
         button_export_tree_as_tree.clicked.connect(button_export_tree_as_tree_clicked)
         vbox.addWidget(button_export_tree_as_tree)
         
@@ -1107,14 +1121,40 @@ class Application(QtWidgets.QMainWindow):
                     tree_manager = TreeManager()
                     tree_manager.write_tree_to_json_file_as_list(self.connector.list_of_menu_instances[
                         instance_menu.id_of_instance].tree, name)
+                    print_tree()
             except:
                 print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-            print_tree()
+            
         button_export_tree_as_list.clicked.connect(button_export_tree_as_list_clicked)
         vbox.addWidget(button_export_tree_as_list)
         
         empty_label_2 = QLabel('')
         vbox.addWidget(empty_label_2)
+        
+        button_print_most_frequent_element = QPushButton()
+        button_print_most_frequent_element.setText('button_print_most_frequent_elements')
+            # self._global_variables.default_dict.get('create_float_tree'))
+        def button_print_most_frequent_element_clicked(arg):
+            tree_manager = TreeManager()
+            list_of_frequency = self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].tree.get_list_of_frequency()
+            print_list(list_of_frequency, 5)
+        button_print_most_frequent_element.clicked.connect(button_print_most_frequent_element_clicked)
+        vbox.addWidget(button_print_most_frequent_element)
+        
+        button_print_list_of_frequency = QPushButton()
+        button_print_list_of_frequency.setText('button_print_list_of_frequency')
+            # self._global_variables.default_dict.get('create_float_tree'))
+        def button_print_list_of_frequency_clicked(arg):
+            tree_manager = TreeManager()
+            list_of_frequency = self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].tree.get_list_of_frequency()
+            print_list(list_of_frequency, len(list_of_frequency))
+        button_print_list_of_frequency.clicked.connect(button_print_list_of_frequency_clicked)
+        vbox.addWidget(button_print_list_of_frequency)
+        
+        empty_label_3 = QLabel('')
+        vbox.addWidget(empty_label_3)
         
         button_delete_tree = QPushButton()
         button_delete_tree.setText(

@@ -338,13 +338,27 @@ class Tree:
         
         return list_of_frequency
     
+    def get_list_of_frequency(self):
+        return list(reversed(self._get_list_of_frequency()))
+    
+    def print_a_few_most_frequent_elements(self):
+        number_of_elements = 5
+        list_of_frequency = list(reversed(self._get_list_of_frequency()))
+        if list_of_frequency:
+            for i, v in enumerate(list_of_frequency):
+                if i < number_of_elements:
+                    try:
+                        print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
+                    except:
+                        pass
+    
     def print_most_frequent_element(self):
         list_of_frequency = self._get_list_of_frequency()
         if list_of_frequency:
             print('Value: ' + str(list_of_frequency[-1][0]))
             print('Frequency: ' + str(list_of_frequency[-1][1]))
         else:
-            print('list_of_frequency is empty')
+            print('Tree is empty.')
     
     def print_list_of_frequency(self):
         list_of_frequency = self._get_list_of_frequency()
@@ -352,7 +366,7 @@ class Tree:
             for v in reversed(list_of_frequency):
                 print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
         else:
-            print('list_of_frequency is empty')
+            print('Tree is empty.')
 
 
 class TreeManager:  
@@ -488,17 +502,19 @@ class TreeManager:
 def demo():
     
     tree_manager = TreeManager()
-    # tree_0 = tree_manager.create_new_random_tree("<class 'int'>", 10)
+    tree_1 = tree_manager.create_new_random_tree("<class 'int'>", 10)
     # tree_manager.write_tree_to_json_file_as_list(tree_0, 'saved_tree.json')
     # tree_1 = tree_manager.read_tree_from_json_file('saved_tree.json')
     # tree_manager.write_tree_to_file_as_tree(tree_1, 'saved_tree.txt')
-    tree_1 = Tree(int)
+    # tree_1 = Tree(int)
     # tree_1 = tree_manager.create_new_random_tree("<class 'int'>", 0)
-    tree_1.add('123')
+    # tree_1.add('123')
     # tree_1.delete_node(tree_1.root, '123')
-    tree_1.pretty_print_tree()
-    tree_1.print_most_frequent_element()
-    tree_1.print_list_of_frequency()
+    tree_1.get_list_of_frequency()
+    tree_1.print_a_few_most_frequent_elements()
+    # tree_1.pretty_print_tree()
+    # tree_1.print_most_frequent_element()
+    # tree_1.print_list_of_frequency()
 
 
 if __name__ == "__main__":
