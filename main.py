@@ -362,13 +362,24 @@ class Tree:
     def get_list_of_frequency(self):
         return list(reversed(self._get_list_of_frequency()))
     
+    def print_a_few_most_frequent_elements(self):
+        number_of_elements = 5
+        list_of_frequency = list(reversed(self._get_list_of_frequency()))
+        if list_of_frequency:
+            for i, v in enumerate(list_of_frequency):
+                if i < number_of_elements:
+                    try:
+                        print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
+                    except:
+                        pass
+    
     def print_most_frequent_element(self):
         list_of_frequency = self._get_list_of_frequency()
         if list_of_frequency:
             print('Value: ' + str(list_of_frequency[-1][0]))
             print('Frequency: ' + str(list_of_frequency[-1][1]))
         else:
-            print('list_of_frequency is empty')
+            print('Tree is empty.')
     
     def print_list_of_frequency(self):
         list_of_frequency = self._get_list_of_frequency()
@@ -376,7 +387,7 @@ class Tree:
             for v in reversed(list_of_frequency):
                 print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
         else:
-            print('list_of_frequency is empty')
+            print('Tree is empty.')
 
 
 class TreeManager:  
@@ -528,6 +539,7 @@ class GlobalVariables:
             options = 'Options',
             additional_options_of_the_instance = 'Additional options',
             update_the_output = 'Update the output',
+            clear_the_output = 'Clear the output',
             create_int_tree = 'Create tree (int)',
             create_float_tree = 'Create tree (float)',
             create_str_tree = 'Create tree (str)',
@@ -539,6 +551,10 @@ class GlobalVariables:
             tree_type = 'Type of tree elements: ',
             pretty_print_tree_to_text_edit = 'Print the tree to the text edit',
             delete_tree = 'Delete the tree',
+            print_most_frequent_elements = 'Print a few the most frequent elements',
+            print_list_of_frequency = 'Print the list of frequency',
+            value = 'Value: ',
+            frequency = 'Frequency: ',
             confirm_your_choice = 'Confirm Your choice',
             are_you_sure_you_want_to_delete = 'Are you sure you want to delete all instances?',
             add_a_new_instance_menu = 'Add a new instance menu',
@@ -566,6 +582,7 @@ class GlobalVariables:
             options = 'Настройки',
             additional_options_of_the_instance = 'Дополнительные настройки',
             update_the_output = 'Обновить отображение',
+            clear_the_output = 'Очистить окно вывода',
             create_int_tree = 'Создать дерево (int)',
             create_float_tree = 'Создать дерево (float)',
             create_str_tree = 'Создать дерево (str)',
@@ -577,6 +594,10 @@ class GlobalVariables:
             tree_type = 'Тип элементов дерева: ',
             pretty_print_tree_to_text_edit = 'Отобразить дерево в окне вывода',
             delete_tree = 'Удалить дерево',
+            print_most_frequent_elements = 'Отобразить самые часто встречающиеся элементы',
+            print_list_of_frequency = 'Отобразить все элементы с количеством их повторений',
+            value = 'Значение: ',
+            frequency = 'Количество повторов: ',
             confirm_your_choice = 'Подтвердите свой выбор',
             are_you_sure_you_want_to_delete = 'Вы уверены, что хотите удалить все объекты?',
             add_a_new_instance_menu = 'Добавить меню для нового экземпляра объекта',
@@ -729,7 +750,7 @@ class InstructionWindow(QtWidgets.QMainWindow):
         frame.setLayout(vbox)
 
         label_text = QLabel()
-        label_text.setText("Text")
+        label_text.setText(self._global_variables.default_dict.get('instructions'))
         vbox.addWidget(label_text)
 
         verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
@@ -862,7 +883,7 @@ class Application(QtWidgets.QMainWindow):
 
         button = QPushButton()
         button_update_the_output = QPushButton()
-        button_update_the_output.setText(self._global_variables.default_dict.get('update_the_output'))
+        button_update_the_output.setText(self._global_variables.default_dict.get('clear_the_output'))
         button_update_the_output.setStyleSheet('QPushButton {background-color:rgb(170, 255, 0); color: black;}')
         qvbox_layout.addWidget(button_update_the_output)
 
@@ -965,7 +986,11 @@ class Application(QtWidgets.QMainWindow):
                 for i, v in enumerate(list_of_frequency):
                     if i < number_of_elements:
                         try:
-                            self.text_edit.append('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
+                            self.text_edit.append(
+                                self._global_variables.default_dict.get('value') + str(v[0]) + ', ' +
+                                self._global_variables.default_dict.get('frequency') + str(v[1]))
+                                # 'Value: ' + str(v[0]) +
+                                #  ', frequency: ' + str(v[1]))
                         except:
                             pass
 
@@ -1132,8 +1157,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(empty_label_2)
         
         button_print_most_frequent_element = QPushButton()
-        button_print_most_frequent_element.setText('button_print_most_frequent_elements')
-            # self._global_variables.default_dict.get('create_float_tree'))
+        button_print_most_frequent_element.setText(
+            self._global_variables.default_dict.get('print_most_frequent_elements'))
         def button_print_most_frequent_element_clicked(arg):
             tree_manager = TreeManager()
             list_of_frequency = self.connector.list_of_menu_instances[
@@ -1143,8 +1168,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(button_print_most_frequent_element)
         
         button_print_list_of_frequency = QPushButton()
-        button_print_list_of_frequency.setText('button_print_list_of_frequency')
-            # self._global_variables.default_dict.get('create_float_tree'))
+        button_print_list_of_frequency.setText(
+            self._global_variables.default_dict.get('print_list_of_frequency'))
         def button_print_list_of_frequency_clicked(arg):
             tree_manager = TreeManager()
             list_of_frequency = self.connector.list_of_menu_instances[
