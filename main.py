@@ -513,7 +513,7 @@ class GlobalVariables:
             no = 'No',
             instance = 'Instance ',
             file = 'File',
-            open = 'Open Project...',
+            open = 'Open...',
             close_project = 'Close Project',
             export_instance_as_png = 'Export instance as PNG',
             instructions = 'Instructions',
@@ -548,7 +548,7 @@ class GlobalVariables:
             no = 'Нет',
             instance = 'Экземпляр объекта ',
             file = 'Файл',
-            open = 'Открыть проект...',
+            open = 'Открыть...',
             close_project = 'Закрыть проект',
             export_instance_as_png = 'Экспортировать как PNG',
             instructions = 'Инструкции',
@@ -827,29 +827,12 @@ class Application(QtWidgets.QMainWindow):
                 img.save(name)
         except:
             print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-
+            
     def show_instructions(self):
         self.instruction_window.show()
 
     def show_about(self):
         self.about_window.show()
-
-    def open_file_dialog(self):
-        try:
-            self.set_a_project()
-            
-            # filename, _ = QFileDialog.getOpenFileName(self,
-            #                                            self._global_variables.default_dict.get(
-            #                                                'open_project'),
-            #                                            'c:\\',
-            #                                             "Excel Files (*.xls *.xml *.xlsx *.xlsm)",
-            #                                           options=QFileDialog.DontUseNativeDialog)
-            # if (filename):
-            #     # self.close_a_project()  # close all active subwindows and dockable windows
-            #     self.set_a_project(filename)
-        except:
-            print('Oops! An Error: There is a problem with a file, which you have tried to open.\n'
-                  ' Make sure, it has the right extension')
 
     def close_a_project(self):
         try:
@@ -993,9 +976,6 @@ class Application(QtWidgets.QMainWindow):
                  tree_manager.create_new_random_tree("<class 'int'>", self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements)
             print_tree()
-            # tree_0 = tree_manager.create_new_random_tree("<class 'int'>", 10)
-            # tree_manager.write_tree_to_json_file_as_list(tree_0, 'saved_tree_1.json')
-            # tree_manager.write_tree_to_file_as_tree(tree_0, 'saved_tree_1.txt')
         button_create_int_tree.clicked.connect(button_create_int_tree_clicked)
         vbox.addWidget(button_create_int_tree)
 
@@ -1067,6 +1047,68 @@ class Application(QtWidgets.QMainWindow):
         
         empty_label_1 = QLabel('')
         vbox.addWidget(empty_label_1)
+        
+        button_import_tree = QPushButton()
+        button_import_tree.setText('button_import_tree')
+            # self._global_variables.default_dict.get('button_import_tree'))
+        def button_import_tree_clicked(arg):
+            try:
+                filename, _ = QFileDialog.getOpenFileName(self,
+                                                           self._global_variables.default_dict.get(
+                                                               'open_project'),'',
+                                                            "Json Files (*.json)",
+                                                          options=QFileDialog.DontUseNativeDialog)
+                if (filename):
+                    tree_manager = TreeManager()
+                    self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree = \
+                        tree_manager.read_tree_from_json_file(filename)
+            except:
+                print('Oops! An Error: There is a problem with a file, which you have tried to open.\n'
+                    ' Make sure, it has the right extension')
+            print_tree()
+        button_import_tree.clicked.connect(button_import_tree_clicked)
+        vbox.addWidget(button_import_tree)
+        
+        button_export_tree_as_tree = QPushButton()
+        button_export_tree_as_tree.setText('button_export_tree_as_tree')
+            # self._global_variables.default_dict.get('button_export_tree_as_tree'))
+        def button_export_tree_as_tree_clicked(arg):
+            try:
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
+                                                            self._global_variables.default_dict.get(
+                                                                'save_file'),
+                                                                '.txt','Txt Files (*.txt)')
+                if name:
+                    tree_manager = TreeManager()
+                    tree_manager.write_tree_to_file_as_tree(self.connector.list_of_menu_instances[
+                        instance_menu.id_of_instance].tree, name)
+            except:
+                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
+            print_tree()
+        button_export_tree_as_tree.clicked.connect(button_export_tree_as_tree_clicked)
+        vbox.addWidget(button_export_tree_as_tree)
+        
+        button_export_tree_as_list = QPushButton()
+        button_export_tree_as_list.setText('button_export_tree_as_list')
+            # self._global_variables.default_dict.get('button_export_tree_as_list'))
+        def button_export_tree_as_list_clicked(arg):
+            try:
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
+                                                            self._global_variables.default_dict.get(
+                                                                'save_file'),
+                                                                '.json','Json Files (*.json)')
+                if name:
+                    tree_manager = TreeManager()
+                    tree_manager.write_tree_to_json_file_as_list(self.connector.list_of_menu_instances[
+                        instance_menu.id_of_instance].tree, name)
+            except:
+                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
+            print_tree()
+        button_export_tree_as_list.clicked.connect(button_export_tree_as_list_clicked)
+        vbox.addWidget(button_export_tree_as_list)
+        
+        empty_label_2 = QLabel('')
+        vbox.addWidget(empty_label_2)
         
         button_delete_tree = QPushButton()
         button_delete_tree.setText(
