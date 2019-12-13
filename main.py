@@ -528,6 +528,9 @@ class GlobalVariables:
             create_int_tree = 'Create tree (int)',
             create_float_tree = 'Create tree (float)',
             create_str_tree = 'Create tree (str)',
+            delete_element = 'Delete element',
+            add_element = 'Add element',
+            tree_type = 'Type of tree elements: ',
             pretty_print_tree_to_text_edit = 'Print the tree to the text edit',
             delete_tree = 'Delete the tree',
             confirm_your_choice = 'Confirm Your choice',
@@ -560,6 +563,9 @@ class GlobalVariables:
             create_int_tree = 'Создать дерево (int)',
             create_float_tree = 'Создать дерево (float)',
             create_str_tree = 'Создать дерево (str)',
+            delete_element = 'Удалить элемент',
+            add_element = 'Добавить элемент',
+            tree_type = 'Тип элементов дерева: ',
             pretty_print_tree_to_text_edit = 'Отобразить дерево в окне вывода',
             delete_tree = 'Удалить дерево',
             confirm_your_choice = 'Подтвердите свой выбор',
@@ -949,8 +955,9 @@ class Application(QtWidgets.QMainWindow):
         name.textChanged.connect(name_changed)
 
         def update_info_label():
-            info_label.setText(str(self.connector.list_of_menu_instances[
-                instance_menu.id_of_instance].tree._type))
+            info_label.setText(
+                self._global_variables.default_dict.get('tree_type') + str(
+                    self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree._type))
 
         def print_tree():
             update_info_label()
@@ -1019,7 +1026,6 @@ class Application(QtWidgets.QMainWindow):
         
         element_name = GrowingTextEdit()
         element_name.setText('')
-        # self.connector.list_of_menu_instances[instance_menu.id_of_instance].name = name.toPlainText()
         element_name.setMinimumHeight(27)
         element_name.setMaximumHeight(27)
 
@@ -1035,8 +1041,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(element_name)
         
         button_add_element = QPushButton()
-        button_add_element.setText('add_element')
-            # self._global_variables.default_dict.get('add_element'))
+        button_add_element.setText(
+            self._global_variables.default_dict.get('add_element'))
         def button_add_element_clicked(arg):
             tree_manager = TreeManager()
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.add(
@@ -1047,8 +1053,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(button_add_element)
         
         button_delete_element = QPushButton()
-        button_delete_element.setText('delete_element')
-            # self._global_variables.default_dict.get('delete_element'))
+        button_delete_element.setText(
+            self._global_variables.default_dict.get('delete_element'))
         def button_delete_element_clicked(arg):
             tree_manager = TreeManager()
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.delete_node(
@@ -1097,15 +1103,13 @@ class Application(QtWidgets.QMainWindow):
         self.QVBox_layout_of_dock_options.addWidget(frame_)
 
     def set_a_project(self):        
-        if self.connector is None:  # we init only one table with a plot for a one project
+        if self.connector is None:  
             self.connector = Connector()
             self.connector.current_widget_to_export = self.text_edit
             self.set_options_dock()
         
     def clear_textedit(self):
         self.text_edit.clear()
-        # self.text_edit.setText('hey it works')
-        # print('hey it works')
 
     def close_application(self):
         msg = QMessageBox()
