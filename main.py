@@ -66,7 +66,7 @@ class Node:
         return "Node: {v}, {l}, {r}".format(v=self.v, l=self.l, r=self.r)
 
 class Tree:
-    def __init__(self, _type: str):
+    def __init__(self, _type: type):
         super().__init__()
         self.root = None
         self._type = _type

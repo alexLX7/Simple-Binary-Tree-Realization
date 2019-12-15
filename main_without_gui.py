@@ -60,7 +60,7 @@ class Node:
         return "Node: {v}, {l}, {r}".format(v=self.v, l=self.l, r=self.r)
 
 class Tree:
-    def __init__(self, _type: str):
+    def __init__(self, _type: type):
         super().__init__()
         self.root = None
         self._type = _type
@@ -70,8 +70,6 @@ class Tree:
 
     def _check_type_of_element(self, val):
         if self._type == int:
-            # print(self._type)
-            # print(str(type(int)))
             return self._try_to_cast_int(val)
         if self._type == float:
             return self._try_to_cast_float(val)
@@ -183,6 +181,23 @@ class Tree:
     def pretty_print_tree_to_the_list(self):
         list_to_print = []
         self._pretty_print_tree_to_the_list(list_to_print, self.root)
+        return list_to_print
+
+    def _pretty_print_tree_to_the_list_double_spaces(self, list_to_print, node, prefix="", isLeft=True):
+        if not node:
+            list_to_print.append("Empty Tree")
+            return
+        if node.r:
+            self._pretty_print_tree_to_the_list_double_spaces(
+                list_to_print, node.r, prefix + ("│      " if isLeft else "         "), False)
+        list_to_print.append(prefix + ("└──  " if isLeft else "┌──  ") + str(node.v))
+        if node.l:
+            self._pretty_print_tree_to_the_list_double_spaces(
+                list_to_print, node.l, prefix + ("         " if isLeft else "│      "), True)
+
+    def pretty_print_tree_to_the_list_double_spaces(self):
+        list_to_print = []
+        self._pretty_print_tree_to_the_list_double_spaces(list_to_print, self.root)
         return list_to_print
 
     def get_tree_as_list(self):
@@ -501,24 +516,28 @@ class TreeManager:
 
 def demo():
     
+    tree_0 = Tree(int) # empty tree, Nodes will be 'int' type 
+    
     tree_manager = TreeManager()
-    tree_1 = tree_manager.create_new_random_tree("<class 'int'>", 10)
-    # tree_manager.write_tree_to_json_file_as_list(tree_0, 'saved_tree.json')
-    # tree_1 = tree_manager.read_tree_from_json_file('saved_tree.json')
-    # tree_manager.write_tree_to_file_as_tree(tree_1, 'saved_tree.txt')
-    # tree_1 = Tree(int)
-    # tree_1 = tree_manager.create_new_random_tree("<class 'int'>", 0)
-    # tree_1.add('123')
-    # tree_1.delete_node(tree_1.root, '123')
-    tree_1.get_list_of_frequency()
-    tree_1.print_a_few_most_frequent_elements()
-    # tree_1.pretty_print_tree()
-    # tree_1.print_most_frequent_element()
-    # tree_1.print_list_of_frequency()
+    tree_1 = tree_manager.create_new_random_tree(str(int), 10) # create a new random Tree(int)
+    tree_manager.write_tree_to_json_file_as_list(tree_1, 'saved_tree.json')
+    
+    tree_2 = tree_manager.read_tree_from_json_file('saved_tree.json')
+    tree_manager.write_tree_to_file_as_tree(tree_2, 'saved_tree.txt')
+    tree_2.pretty_print_tree()
+    tree_2.print_a_few_most_frequent_elements()
+    tree_2.print_most_frequent_element()
+    tree_2.print_list_of_frequency()
+    
+    tree_3 = tree_manager.create_new_random_tree(str(int), 3)
+    tree_3.add('123') # added '123' as new Node with value of int('123') to the leaf
+    tree_3.pretty_print_tree()
+    tree_3.delete_node(tree_3.root, '123')
+    # Deletion starts from the root, removing the furthest Node with value int('123')
+    tree_3.pretty_print_tree()
 
 
 if __name__ == "__main__":
     
-    # TO DO: GUI
     demo()
     
