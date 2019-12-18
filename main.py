@@ -636,6 +636,33 @@ class Tree:
                     count, itm = d[item], item
         return d
     
+    def print_the_most_frequent_element(self):
+        list_of_frequency = list(reversed(self._get_list_of_frequency()))
+        
+        counter = 0
+        if list_of_frequency:
+            for i, v in enumerate(list_of_frequency):
+                print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
+                if v[1]> counter:
+                    counter = v[1]
+                
+        raw_list_of_most_common_elements = []    
+        for i, v in enumerate(list_of_frequency):
+            if v[1] == counter:
+                raw_list_of_most_common_elements.append(v[1])
+                
+        list_of_counters = []
+        for value in raw_list_of_most_common_elements:
+            if value not in list_of_counters:
+                list_of_counters.append(value)
+                
+        list_of_most_common_elements = []
+        for i, v in enumerate(list_of_frequency):
+            for _, _v in enumerate(list_of_counters):
+                if v[1] == _v:
+                    list_of_most_common_elements.append([v[0], v[1]])
+        return list_of_most_common_elements
+    
     def _get_list_of_frequency(self):
         dict_frequency = self._process_frequency()     
         raw_list_of_frequency = []
@@ -1325,6 +1352,17 @@ class Application(QtWidgets.QMainWindow):
                         except:
                             pass
         
+        def _print_list(list_of_frequency):
+            self.text_edit.clear()
+            if list_of_frequency:
+                for i, v in enumerate(list_of_frequency):
+                    try:
+                        self.text_edit.append(
+                            self._global_variables.default_dict.get('value') + str(v[0]) + ', ' +
+                            self._global_variables.default_dict.get('frequency') + str(v[1]))
+                    except:
+                        pass
+        
         def print_dict(_dict: dict):
             self.text_edit.clear()
             for v, h in _dict.items():
@@ -1594,9 +1632,12 @@ class Application(QtWidgets.QMainWindow):
             self._global_variables.default_dict.get('print_most_frequent_elements'))
         def button_print_most_frequent_element_clicked(arg):
             tree_manager = TreeManager()
+            # list_of_frequency = self.connector.list_of_menu_instances[
+            #     instance_menu.id_of_instance].tree.get_list_of_frequency()
             list_of_frequency = self.connector.list_of_menu_instances[
-                instance_menu.id_of_instance].tree.get_list_of_frequency()
-            print_list(list_of_frequency, 5)
+                instance_menu.id_of_instance].tree.print_the_most_frequent_element()
+            # print_list(list_of_frequency, 5)
+            _print_list(list_of_frequency)
         button_print_most_frequent_element.clicked.connect(button_print_most_frequent_element_clicked)
         vbox.addWidget(button_print_most_frequent_element)
         
