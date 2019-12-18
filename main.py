@@ -823,9 +823,12 @@ class GlobalVariables:
             create_str_tree = 'Create tree (str)',
             delete_element = 'Delete element',
             add_element = 'Add element',
-            export_tree_as_list = 'Save current tree (as *.json)',
-            export_tree_as_tree = 'Save current tree (as *.txt)',
+            export_tree_as_list = 'Save binary tree (as *.json)',
+            export_avl_tree_as_list = 'Save AVL tree (as *.json)',
+            export_tree_as_tree = 'Save binary tree (as *.txt)',
+            export_avl_tree_as_tree = 'Save AVL tree (as *.txt)',
             import_tree = 'Import tree from the file',
+            import_avl_tree = 'Import AVL tree from the file',
             tree_type = 'Type of tree elements: ',
             pretty_print_tree_to_text_edit = 'Show the tree',
             pretty_print_avl_tree_to_text_edit = 'Show the AVL tree',
@@ -868,8 +871,11 @@ class GlobalVariables:
             delete_element = 'Удалить элемент',
             add_element = 'Добавить элемент',
             export_tree_as_list = 'Экспортировать дерево (*.json)',
+            export_avl_tree_as_list = 'Экспортировать АВЛ дерево (*.json)',
             export_tree_as_tree = 'Экспортировать дерево (*.txt)',
+            export_avl_tree_as_tree = 'Экспортировать АВЛ дерево (*.txt)',
             import_tree = 'Импортировать дерево из файла',
+            import_avl_tree = 'Импортировать АВЛ дерево из файла',
             tree_type = 'Тип элементов дерева: ',
             pretty_print_tree_to_text_edit = 'Отобразить дерево',
             pretty_print_avl_tree_to_text_edit = 'Отобразить АВЛ дерево',
@@ -900,6 +906,7 @@ class MenuInstance:
         self.avl_tree = Tree(int)
         self.number_of_elements = 0
         self.element_name = ''
+        self.value_to_check_the_sum_of_digits_of_node = 0
     
 
 class GrowingTextEdit(QtWidgets.QTextEdit):
@@ -1298,6 +1305,26 @@ class Application(QtWidgets.QMainWindow):
                                 self._global_variables.default_dict.get('frequency') + str(v[1]))
                         except:
                             pass
+        
+        def print_dict(_dict: dict):
+            self.text_edit.clear()
+            # if list_of_frequency:
+            for v, h in _dict.items():
+                # print(k, v)
+                try:
+                    self.text_edit.append(
+                        self._global_variables.default_dict.get('value') + str(v) + ', ' +
+                        self._global_variables.default_dict.get('frequency') + str(h))
+                except:
+                    pass
+            #     for i, v in enumerate(list_of_frequency):
+            #         if i < number_of_elements:
+            #             try:
+            #                 self.text_edit.append(
+            #                     self._global_variables.default_dict.get('value') + str(v[0]) + ', ' +
+            #                     self._global_variables.default_dict.get('frequency') + str(v[1]))
+            #             except:
+            #                 pass
 
         button_pretty_print_tree_to_text_edit = QPushButton()
         button_pretty_print_tree_to_text_edit.setText(
@@ -1432,6 +1459,27 @@ class Application(QtWidgets.QMainWindow):
         button_import_tree.clicked.connect(button_import_tree_clicked)
         vbox.addWidget(button_import_tree)
         
+        # button_import_avl_tree = QPushButton()
+        # button_import_avl_tree.setText(
+        #     self._global_variables.default_dict.get('import_avl_tree'))
+        # def button_import_avl_tree_clicked(arg):
+        #     try:
+        #         filename, _ = QFileDialog.getOpenFileName(self,
+        #                                                    self._global_variables.default_dict.get(
+        #                                                        'open_project'),'',
+        #                                                     "Json Files (*.json)",
+        #                                                   options=QFileDialog.DontUseNativeDialog)
+        #         if (filename):
+        #             tree_manager = TreeManager()
+        #             self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree = \
+        #                 tree_manager.read_tree_from_json_file(filename)
+        #     except:
+        #         print('Oops! An Error: There is a problem with a file, which you have tried to open.\n'
+        #             ' Make sure, it has the right extension')
+        #     print_avl_tree()
+        # button_import_avl_tree.clicked.connect(button_import_avl_tree_clicked)
+        # vbox.addWidget(button_import_avl_tree)
+        
         button_export_tree_as_tree = QPushButton()
         button_export_tree_as_tree.setText(
             self._global_variables.default_dict.get('export_tree_as_tree'))
@@ -1452,6 +1500,26 @@ class Application(QtWidgets.QMainWindow):
         button_export_tree_as_tree.clicked.connect(button_export_tree_as_tree_clicked)
         vbox.addWidget(button_export_tree_as_tree)
         
+        button_export_avl_tree_as_tree = QPushButton()
+        button_export_avl_tree_as_tree.setText(
+            self._global_variables.default_dict.get('export_avl_tree_as_tree'))
+        def button_export_avl_tree_as_tree_clicked(arg):
+            try:
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
+                                                            self._global_variables.default_dict.get(
+                                                                'save_file'),
+                                                                '.txt','Txt Files (*.txt)')
+                if name:
+                    tree_manager = TreeManager()
+                    tree_manager.write_tree_to_file_as_tree(self.connector.list_of_menu_instances[
+                        instance_menu.id_of_instance].avl_tree, name)
+                    print_avl_tree()    
+            except:
+                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
+                
+        button_export_avl_tree_as_tree.clicked.connect(button_export_avl_tree_as_tree_clicked)
+        vbox.addWidget(button_export_avl_tree_as_tree)
+        
         button_export_tree_as_list = QPushButton()
         button_export_tree_as_list.setText(
             self._global_variables.default_dict.get('export_tree_as_list'))
@@ -1471,6 +1539,26 @@ class Application(QtWidgets.QMainWindow):
             
         button_export_tree_as_list.clicked.connect(button_export_tree_as_list_clicked)
         vbox.addWidget(button_export_tree_as_list)
+        
+        button_export_avl_tree_as_list = QPushButton()
+        button_export_avl_tree_as_list.setText(
+            self._global_variables.default_dict.get('export_avl_tree_as_list'))
+        def button_export_avl_tree_as_list_clicked(arg):
+            try:
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
+                                                            self._global_variables.default_dict.get(
+                                                                'save_file'),
+                                                                '.json','Json Files (*.json)')
+                if name:
+                    tree_manager = TreeManager()
+                    tree_manager.write_tree_to_json_file_as_list(self.connector.list_of_menu_instances[
+                        instance_menu.id_of_instance].avl_tree, name)
+                    print_avl_tree()
+            except:
+                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
+            
+        button_export_avl_tree_as_list.clicked.connect(button_export_avl_tree_as_list_clicked)
+        vbox.addWidget(button_export_avl_tree_as_list)
         
         empty_label_2 = QLabel('')
         vbox.addWidget(empty_label_2)
@@ -1496,6 +1584,33 @@ class Application(QtWidgets.QMainWindow):
             print_list(list_of_frequency, len(list_of_frequency))
         button_print_list_of_frequency.clicked.connect(button_print_list_of_frequency_clicked)
         vbox.addWidget(button_print_list_of_frequency)
+        
+        def set_value_to_check_the_sum_of_digits_of_node():
+            spinBox_value_to_check_the_sum_of_digits_of_node.setMaximum(100)
+            if spinBox_value_to_check_the_sum_of_digits_of_node.value(
+                ) <= spinBox_value_to_check_the_sum_of_digits_of_node.value():
+                self.connector.list_of_menu_instances[
+                    instance_menu.id_of_instance].value_to_check_the_sum_of_digits_of_node = float(
+                        str(spinBox_value_to_check_the_sum_of_digits_of_node.value()))
+
+        spinBox_value_to_check_the_sum_of_digits_of_node = QDoubleSpinBox()
+        spinBox_value_to_check_the_sum_of_digits_of_node.valueChanged.connect(
+            set_value_to_check_the_sum_of_digits_of_node)
+        vbox.addWidget(spinBox_value_to_check_the_sum_of_digits_of_node)
+        
+        button_print_list_of_needed_values = QPushButton()
+        button_print_list_of_needed_values.setText("print_list_of_needed_values")
+            # self._global_variables.default_dict.get('print_most_frequent_elements'))
+        def button_print_list_of_needed_values_clicked(arg):
+            avl = AVL()
+            _avl_tree_as_list = [i for i in self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].tree.get_tree_as_list() if i]
+            for i, v in enumerate(_avl_tree_as_list):
+                avl.insert_element(v)
+            print_dict(avl.get_list_of_needed_values(self.connector.list_of_menu_instances[
+                    instance_menu.id_of_instance].value_to_check_the_sum_of_digits_of_node))
+        button_print_list_of_needed_values.clicked.connect(button_print_list_of_needed_values_clicked)
+        vbox.addWidget(button_print_list_of_needed_values)
         
         empty_label_3 = QLabel('')
         vbox.addWidget(empty_label_3)
