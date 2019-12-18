@@ -60,6 +60,7 @@ class AVL:
 
     class AVLNode:
         """Private class for storing linked nodes with values and references to their siblings"""
+        # __slots__ = ["_value", "_height", "_left", "_right"]
         def __init__(self, value):
             """Node Constructor with 3 attributes"""
             self._value = value     # value being added
@@ -86,11 +87,12 @@ class AVL:
             return AVL.AVLNode(value)
         # if node._value == value:  # if we come across a value already in the list
         #    node._right = self._insert_element(value, node._right)
-        if value < node._value:
-             node._left = self._insert_element(value, node._left)
-        elif value > node._value:  # if a right node child node exists
-            node._right = self._insert_element(value, node._right)
-        node._height = self.height(node)
+        if value:
+            if value < node._value:
+                node._left = self._insert_element(value, node._left)
+            elif value > node._value:  # if a right node child node exists
+                node._right = self._insert_element(value, node._right)
+        # node._height = self.height(node)
         return self.balance(node)
 
     def get_height_by_value(self, value):
@@ -674,8 +676,8 @@ class TreeManager:
         self._tree_name = 'tree_as_list' # for json format, saves tree as list with name '_tree_name'
         self._tree_type = 'tree_type'
         self._known_types = {"<class 'int'>": int, "<class 'float'>": float, "<class 'str'>": str}
-        self._from = 0 # default int/float value of elements for random creation
-        self._to = 30 # default int/float value of elements for random creation
+        self._from = -99 # default int/float value of elements for random creation
+        self._to = 99 # default int/float value of elements for random creation
         self._min_number_of_elements = 0
         self._max_number_of_elements = 1024 # it is not actual max number
     
@@ -825,7 +827,8 @@ class GlobalVariables:
             export_tree_as_tree = 'Save current tree (as *.txt)',
             import_tree = 'Import tree from the file',
             tree_type = 'Type of tree elements: ',
-            pretty_print_tree_to_text_edit = 'Print the tree to the text edit',
+            pretty_print_tree_to_text_edit = 'Show the tree',
+            pretty_print_avl_tree_to_text_edit = 'Show the AVL tree',
             delete_tree = 'Delete the tree',
             print_most_frequent_elements = 'Print a few the most frequent elements',
             print_list_of_frequency = 'Print the list of frequency',
@@ -868,7 +871,8 @@ class GlobalVariables:
             export_tree_as_tree = 'Экспортировать дерево (*.txt)',
             import_tree = 'Импортировать дерево из файла',
             tree_type = 'Тип элементов дерева: ',
-            pretty_print_tree_to_text_edit = 'Отобразить дерево в окне вывода',
+            pretty_print_tree_to_text_edit = 'Отобразить дерево',
+            pretty_print_avl_tree_to_text_edit = 'Отобразить АВЛ дерево',
             delete_tree = 'Удалить дерево',
             print_most_frequent_elements = 'Отобразить самые часто встречающиеся элементы',
             print_list_of_frequency = 'Отобразить все элементы с количеством их повторений',
@@ -893,6 +897,7 @@ class MenuInstance:
         self.id_of_instance = 0  # without id you couldn't get proper instance by call from another class
         self.name = self._global_variables.default_dict.get('instance')  # name of the instance
         self.tree = Tree(int)
+        self.avl_tree = Tree(int)
         self.number_of_elements = 0
         self.element_name = ''
     
@@ -1256,6 +1261,32 @@ class Application(QtWidgets.QMainWindow):
             for i, v in enumerate(tree_as_list):
                 self.text_edit.append(v)
                 
+        def update_avl_tree():
+            avl = AVL()
+            # _avl_tree_as_list = self.connector.list_of_menu_instances[
+            #     instance_menu.id_of_instance].tree.get_tree_as_list()
+            # [i for i in tree.get_tree_as_list() if i]
+            _avl_tree_as_list = [i for i in self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].tree.get_tree_as_list() if i]
+            for i, v in enumerate(_avl_tree_as_list):
+                avl.insert_element(v)
+            pre_order = avl.pre_order_to_list([])
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.delete_tree()
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree._type = \
+                self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree._type
+            if pre_order:
+                for _, v in enumerate(pre_order):
+                    self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.add(v)
+                
+        def print_avl_tree():
+            update_info_label()
+            self.text_edit.clear()
+            update_avl_tree()
+            tree_as_list = self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].avl_tree.pretty_print_tree_to_the_list_double_spaces()
+            for i, v in enumerate(tree_as_list):
+                self.text_edit.append(v)
+                
         def print_list(list_of_frequency: list, number_of_elements: int):
             self.text_edit.clear()
             if list_of_frequency:
@@ -1265,8 +1296,6 @@ class Application(QtWidgets.QMainWindow):
                             self.text_edit.append(
                                 self._global_variables.default_dict.get('value') + str(v[0]) + ', ' +
                                 self._global_variables.default_dict.get('frequency') + str(v[1]))
-                                # 'Value: ' + str(v[0]) +
-                                #  ', frequency: ' + str(v[1]))
                         except:
                             pass
 
@@ -1276,9 +1305,18 @@ class Application(QtWidgets.QMainWindow):
         def button_pretty_print_tree_to_text_edit_clicked(arg):
             print_tree()
         button_pretty_print_tree_to_text_edit.clicked.connect(button_pretty_print_tree_to_text_edit_clicked)
+        
+        button_pretty_print_avl_tree_to_text_edit = QPushButton()
+        button_pretty_print_avl_tree_to_text_edit.setText(
+            self._global_variables.default_dict.get('pretty_print_avl_tree_to_text_edit'))
+        def button_pretty_print_avl_tree_to_text_edit_clicked(arg):
+            if self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].avl_tree.pretty_print_tree_to_the_list_double_spaces():
+                print_avl_tree()
+        button_pretty_print_avl_tree_to_text_edit.clicked.connect(button_pretty_print_avl_tree_to_text_edit_clicked)
 
         def set_number_of_elements():
-            spinBox.setMaximum(100)
+            spinBox.setMaximum(400)
             if spinBox.value() <= spinBox.value():
                 self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements = int(
@@ -1295,6 +1333,7 @@ class Application(QtWidgets.QMainWindow):
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree =\
                  tree_manager.create_new_random_tree("<class 'int'>", self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements)
+            update_avl_tree()
             print_tree()
         button_create_int_tree.clicked.connect(button_create_int_tree_clicked)
         vbox.addWidget(button_create_int_tree)
@@ -1306,6 +1345,7 @@ class Application(QtWidgets.QMainWindow):
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree =\
                  tree_manager.create_new_random_tree("<class 'float'>", self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements)
+            update_avl_tree()
             print_tree()
         button_create_float_tree.clicked.connect(button_create_float_tree_clicked)
         vbox.addWidget(button_create_float_tree)
@@ -1317,6 +1357,7 @@ class Application(QtWidgets.QMainWindow):
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree =\
                  tree_manager.create_new_random_tree("<class 'str'>", self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements)
+            update_avl_tree()
             print_tree()
         button_create_str_tree.clicked.connect(button_create_str_tree_clicked)
         vbox.addWidget(button_create_str_tree)
@@ -1348,6 +1389,7 @@ class Application(QtWidgets.QMainWindow):
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.add(
                 self.connector.list_of_menu_instances[instance_menu.id_of_instance].element_name)
             element_name.setText('')
+            update_avl_tree()
             print_tree()
         button_add_element.clicked.connect(button_add_element_clicked)
         vbox.addWidget(button_add_element)
@@ -1361,6 +1403,7 @@ class Application(QtWidgets.QMainWindow):
                 self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.root,
                 self.connector.list_of_menu_instances[instance_menu.id_of_instance].element_name)
             element_name.setText('')
+            update_avl_tree()
             print_tree()
         button_delete_element.clicked.connect(button_delete_element_clicked)
         vbox.addWidget(button_delete_element)
@@ -1462,6 +1505,7 @@ class Application(QtWidgets.QMainWindow):
             self._global_variables.default_dict.get('delete_tree'))
         def button_delete_tree_clicked(arg):
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.delete_tree()
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.delete_tree()
             print_tree()
         button_delete_tree.clicked.connect(button_delete_tree_clicked)
         vbox.addWidget(button_delete_tree)
@@ -1476,6 +1520,7 @@ class Application(QtWidgets.QMainWindow):
         vlay.addWidget(name)
         vlay.addWidget(info_label)
         vlay.addWidget(button_pretty_print_tree_to_text_edit)
+        vlay.addWidget(button_pretty_print_avl_tree_to_text_edit)
         vlay.addWidget(box)
         
         verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
