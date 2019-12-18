@@ -835,8 +835,10 @@ class GlobalVariables:
             delete_tree = 'Delete the tree',
             print_most_frequent_elements = 'Print a few the most frequent elements',
             print_list_of_frequency = 'Print the list of frequency',
+            print_list_of_needed_values = 'Print list of values, which sum of digits is more than N',
             value = 'Value: ',
             frequency = 'Frequency: ',
+            height = 'Height: ',
             confirm_your_choice = 'Confirm Your choice',
             are_you_sure_you_want_to_delete = 'Are you sure you want to delete all instances?',
             add_a_new_instance_menu = 'Add a new instance menu',
@@ -882,8 +884,10 @@ class GlobalVariables:
             delete_tree = 'Удалить дерево',
             print_most_frequent_elements = 'Отобразить самые часто встречающиеся элементы',
             print_list_of_frequency = 'Отобразить все элементы с количеством их повторений',
+            print_list_of_needed_values = 'Отобразить элементы, сумма цифр которых больше N',
             value = 'Значение: ',
             frequency = 'Количество повторов: ',
+            height = 'Уровень: ',
             confirm_your_choice = 'Подтвердите свой выбор',
             are_you_sure_you_want_to_delete = 'Вы уверены, что хотите удалить все объекты?',
             add_a_new_instance_menu = 'Добавить меню для нового экземпляра объекта',
@@ -1308,23 +1312,13 @@ class Application(QtWidgets.QMainWindow):
         
         def print_dict(_dict: dict):
             self.text_edit.clear()
-            # if list_of_frequency:
             for v, h in _dict.items():
-                # print(k, v)
                 try:
                     self.text_edit.append(
                         self._global_variables.default_dict.get('value') + str(v) + ', ' +
-                        self._global_variables.default_dict.get('frequency') + str(h))
+                        self._global_variables.default_dict.get('height') + str(h))
                 except:
                     pass
-            #     for i, v in enumerate(list_of_frequency):
-            #         if i < number_of_elements:
-            #             try:
-            #                 self.text_edit.append(
-            #                     self._global_variables.default_dict.get('value') + str(v[0]) + ', ' +
-            #                     self._global_variables.default_dict.get('frequency') + str(v[1]))
-            #             except:
-            #                 pass
 
         button_pretty_print_tree_to_text_edit = QPushButton()
         button_pretty_print_tree_to_text_edit.setText(
@@ -1599,8 +1593,8 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(spinBox_value_to_check_the_sum_of_digits_of_node)
         
         button_print_list_of_needed_values = QPushButton()
-        button_print_list_of_needed_values.setText("print_list_of_needed_values")
-            # self._global_variables.default_dict.get('print_most_frequent_elements'))
+        button_print_list_of_needed_values.setText(
+            self._global_variables.default_dict.get('print_list_of_needed_values'))
         def button_print_list_of_needed_values_clicked(arg):
             avl = AVL()
             _avl_tree_as_list = [i for i in self.connector.list_of_menu_instances[
