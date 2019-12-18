@@ -356,6 +356,33 @@ class Tree:
     def get_list_of_frequency(self):
         return list(reversed(self._get_list_of_frequency()))
     
+    def print_the_most_frequent_element(self):
+        list_of_frequency = list(reversed(self._get_list_of_frequency()))
+        
+        counter = 0
+        if list_of_frequency:
+            for i, v in enumerate(list_of_frequency):
+                print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
+                if v[1]> counter:
+                    counter = v[1]
+                
+        raw_list_of_most_common_elements = []    
+        for i, v in enumerate(list_of_frequency):
+            if v[1] == counter:
+                raw_list_of_most_common_elements.append(v[1])
+                
+        list_of_counters = []
+        for value in raw_list_of_most_common_elements:
+            if value not in list_of_counters:
+                list_of_counters.append(value)
+                
+        list_of_most_common_elements = []
+        for i, v in enumerate(list_of_frequency):
+            for _, _v in enumerate(list_of_counters):
+                if v[1] == _v:
+                    list_of_most_common_elements.append([v[0], v[1]])
+        return list_of_most_common_elements
+    
     def print_a_few_most_frequent_elements(self):
         number_of_elements = 5
         list_of_frequency = list(reversed(self._get_list_of_frequency()))
@@ -516,25 +543,32 @@ class TreeManager:
 
 def demo():
     
-    tree_0 = Tree(int) # empty tree, Nodes will be 'int' type 
+    # tree_0 = Tree(int) # empty tree, Nodes will be 'int' type 
+    
+    # tree_manager = TreeManager()
+    # tree_1 = tree_manager.create_new_random_tree(str(int), 10) # create a new random Tree(int)
+    # tree_manager.write_tree_to_json_file_as_list(tree_1, 'saved_tree.json')
     
     tree_manager = TreeManager()
-    tree_1 = tree_manager.create_new_random_tree(str(int), 10) # create a new random Tree(int)
-    tree_manager.write_tree_to_json_file_as_list(tree_1, 'saved_tree.json')
-    
     tree_2 = tree_manager.read_tree_from_json_file('saved_tree.json')
     tree_manager.write_tree_to_file_as_tree(tree_2, 'saved_tree.txt')
     tree_2.pretty_print_tree()
     tree_2.print_a_few_most_frequent_elements()
     tree_2.print_most_frequent_element()
     tree_2.print_list_of_frequency()
+    print(tree_2.print_the_most_frequent_element())
     
-    tree_3 = tree_manager.create_new_random_tree(str(int), 3)
-    tree_3.add('123') # added '123' as new Node with value of int('123') to the leaf
-    tree_3.pretty_print_tree()
-    tree_3.delete_node(tree_3.root, '123')
-    # Deletion starts from the root, removing the furthest Node with value int('123')
-    tree_3.pretty_print_tree()
+    # tree_3 = tree_manager.create_new_random_tree(str(int), 3)
+    # tree_3.add('123') # added '123' as new Node with value of int('123') to the leaf
+    # tree_3.pretty_print_tree()
+    # tree_3.delete_node(tree_3.root, '123')
+    # # Deletion starts from the root, removing the furthest Node with value int('123')
+    # tree_3.pretty_print_tree()
+    
+    # tree_manager = TreeManager()
+    # tree = tree_manager.create_new_random_tree(str(int), 200) # create a new random Tree(int)
+    # l = tree.get_tree_as_list()
+    # print(l)
 
 
 if __name__ == "__main__":
