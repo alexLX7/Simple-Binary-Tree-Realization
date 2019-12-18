@@ -2,6 +2,7 @@ class AVL:
     """Base Class representing a Binary Search Tree Structure"""
 
     class AVLNode:
+        __slots__ = ["_value", "_height", "_left", "_right"]
         """Private class for storing linked nodes with values and references to their siblings"""
         def __init__(self, value):
             """Node Constructor with 3 attributes"""
@@ -267,6 +268,18 @@ class AVL:
         return d
         # return _list_of_needed_values
 
+    def get_average_height(self): # N means a sum of digits of node
+        _list = self.pre_order_to_list([])
+        _list_of_heights = []
+        value_to_return = 0
+        try:
+            for _, v in enumerate(_list):
+                _list_of_heights.append(self.get_height_by_value(v))
+            value_to_return = sum(_list_of_heights) / len(_list_of_heights)
+        except:
+            print("Error: There are not only digits in the Tree but also non-digit chars")
+        return value_to_return
+
     def print_dict(self, d: dict):
         if d:
             for k, v in d.items():
@@ -276,63 +289,80 @@ class AVL:
 
 
 if __name__ == '__main__':
-    # See Unit Test: BST_Test.py
-    # pass
+    # avl = AVL()
+    # #print("Height of Tree; " + str(avl.height(avl)))
+    
+    # avl.insert_element(60)
+    # avl.insert_element(64)
+    # avl.insert_element(63)
+    # avl.insert_element(60)
+    # avl.insert_element(60)
+    # avl.insert_element(61)
+    
+    # avl.insert_element(40)
+    # avl.insert_element(95)
+    # avl.insert_element(87)
+    # avl.insert_element(44)
+    # avl.insert_element(6)
+    # avl.insert_element(61)
+    # avl.insert_element(9)
+    # avl.insert_element(60)
+    # avl.insert_element(28)
+    # avl.insert_element(15)
+    # avl.remove_element(61)
+    
+    # avl.insert_element(60)
+    # avl.insert_element(64)
+    # avl.insert_element(63)
+    # avl.insert_element(60)
+    # avl.insert_element(60)
+    # avl.insert_element(61)
+    
+    # # avl.insert_element(8.4)
+    # # avl.insert_element(28.6)
+    # # avl.insert_element(15.4)
+    # # avl.insert_element(43.6)
+    # # avl.insert_element(10.4)
+    # # avl.insert_element(8.6)
+    # # avl.insert_element(9.4)
+    # # avl.insert_element(23.6)
+    
+    # # avl.insert_element("Hey")
+    # # avl.insert_element("How")
+    # # avl.insert_element("Are")
+    # # avl.insert_element("You")
+    # # avl.insert_element("&^?")
+    
+    # a = avl.get_root()
+    # print("Height of Tree: " + str(avl.height(a)))
+    # print("Printing Tree (Pre-Order): " + str(avl.pre_order()))
+    # print("-------------------")
+    # print("Printing Tree (In-Order): " + str(avl.in_order()))
+    # print("-------------------")
+    
+    # print(avl.pre_order_to_list([]))
+    
+    # d = avl.get_list_of_needed_values(1)
+    # avl.print_dict(d)
+    
+    # print(avl.find(60))
+    
+    # ================
+    
+    import random
+    _from = -99
+    _to = 99
+    _number_of_elements = 400
+    _list = [random.randint(_from, _to) for i in range(_number_of_elements)]
     avl = AVL()
-    #print("Height of Tree; " + str(avl.height(avl)))
     
-    avl.insert_element(60)
-    avl.insert_element(64)
-    avl.insert_element(63)
-    avl.insert_element(60)
-    avl.insert_element(60)
-    avl.insert_element(61)
-    
-    avl.insert_element(40)
-    avl.insert_element(95)
-    avl.insert_element(87)
-    avl.insert_element(44)
-    avl.insert_element(6)
-    avl.insert_element(61)
-    avl.insert_element(9)
-    avl.insert_element(60)
-    avl.insert_element(28)
-    avl.insert_element(15)
-    avl.remove_element(61)
-    
-    avl.insert_element(60)
-    avl.insert_element(64)
-    avl.insert_element(63)
-    avl.insert_element(60)
-    avl.insert_element(60)
-    avl.insert_element(61)
-    
-    # avl.insert_element(8.4)
-    # avl.insert_element(28.6)
-    # avl.insert_element(15.4)
-    # avl.insert_element(43.6)
-    # avl.insert_element(10.4)
-    # avl.insert_element(8.6)
-    # avl.insert_element(9.4)
-    # avl.insert_element(23.6)
-    
-    # avl.insert_element("Hey")
-    # avl.insert_element("How")
-    # avl.insert_element("Are")
-    # avl.insert_element("You")
-    # avl.insert_element("&^?")
-    
-    a = avl.get_root()
-    print("Height of Tree: " + str(avl.height(a)))
-    print("Printing Tree (Pre-Order): " + str(avl.pre_order()))
-    print("-------------------")
-    print("Printing Tree (In-Order): " + str(avl.in_order()))
-    print("-------------------")
-    
+    for i, v in enumerate(_list):
+        avl.insert_element(v)
+
     print(avl.pre_order_to_list([]))
+    print()
+
+    # print("Height of Tree; " + str(avl.height(avl)))
     
-    d = avl.get_list_of_needed_values(1)
-    avl.print_dict(d)
     
-    print(avl.find(60))
     
