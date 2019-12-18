@@ -324,7 +324,18 @@ class AVL:
         except:
             print("Error: There are not only digits in the Tree but also non-digit chars")
         return d
-        # return _list_of_needed_values
+
+    def get_average_height(self): # N means a sum of digits of node
+        _list = self.pre_order_to_list([])
+        _list_of_heights = []
+        value_to_return = 0
+        try:
+            for _, v in enumerate(_list):
+                _list_of_heights.append(self.get_height_by_value(v))
+            value_to_return = sum(_list_of_heights) / len(_list_of_heights)
+        except:
+            pass
+        return value_to_return
 
     def print_dict(self, d: dict):
         if d:
@@ -829,6 +840,8 @@ class GlobalVariables:
             export_avl_tree_as_tree = 'Save AVL tree (as *.txt)',
             import_tree = 'Import tree from the file',
             import_avl_tree = 'Import AVL tree from the file',
+            print_average_height_of_avl_tree = 'Print average height of AVL tree',
+            average_height_of_avl_tree = 'Average height of AVL tree: ',
             tree_type = 'Type of tree elements: ',
             pretty_print_tree_to_text_edit = 'Show the tree',
             pretty_print_avl_tree_to_text_edit = 'Show the AVL tree',
@@ -878,6 +891,8 @@ class GlobalVariables:
             export_avl_tree_as_tree = 'Экспортировать АВЛ дерево (*.txt)',
             import_tree = 'Импортировать дерево из файла',
             import_avl_tree = 'Импортировать АВЛ дерево из файла',
+            print_average_height_of_avl_tree = 'Отобразить среднюю высоту АВЛ дерева',
+            average_height_of_avl_tree = 'Средняя высота АВЛ дерева: ',
             tree_type = 'Тип элементов дерева: ',
             pretty_print_tree_to_text_edit = 'Отобразить дерево',
             pretty_print_avl_tree_to_text_edit = 'Отобразить АВЛ дерево',
@@ -1556,6 +1571,23 @@ class Application(QtWidgets.QMainWindow):
         
         empty_label_2 = QLabel('')
         vbox.addWidget(empty_label_2)
+        
+        button_print_average_height = QPushButton()
+        button_print_average_height.setText(
+            self._global_variables.default_dict.get('print_average_height_of_avl_tree'))
+        def button_print_average_height_clicked(arg):
+            self.text_edit.clear()
+            avl = AVL()
+            _avl_tree_as_list = [i for i in self.connector.list_of_menu_instances[
+                instance_menu.id_of_instance].tree.get_tree_as_list() if i]
+            for i, v in enumerate(_avl_tree_as_list):
+                avl.insert_element(v)
+            average_height = avl.get_average_height()
+            self.text_edit.append(self._global_variables.default_dict.get(
+                'average_height_of_avl_tree') + str(average_height))
+            
+        button_print_average_height.clicked.connect(button_print_average_height_clicked)
+        vbox.addWidget(button_print_average_height)
         
         button_print_most_frequent_element = QPushButton()
         button_print_most_frequent_element.setText(
