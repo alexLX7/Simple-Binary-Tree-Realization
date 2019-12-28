@@ -60,7 +60,6 @@ class AVL:
 
     class AVLNode:
         """Private class for storing linked nodes with values and references to their siblings"""
-        # __slots__ = ["_value", "_height", "_left", "_right"]
         def __init__(self, value):
             """Node Constructor with 3 attributes"""
             self._value = value     # value being added
@@ -85,14 +84,11 @@ class AVL:
         #    raise ValueError
         if node is None:
             return AVL.AVLNode(value)
-        # if node._value == value:  # if we come across a value already in the list
-        #    node._right = self._insert_element(value, node._right)
         if value:
             if value < node._value:
                 node._left = self._insert_element(value, node._left)
             elif value > node._value:  # if a right node child node exists
                 node._right = self._insert_element(value, node._right)
-        # node._height = self.height(node)
         return self.balance(node)
 
     def get_height_by_value(self, value):
@@ -105,7 +101,7 @@ class AVL:
                 current_node = current_node._left
             else:
                 current_node = current_node._right
-        return None # "Value not Found in Tree!"
+        return None 
 
     def find(self, value):
         """Return True if value is in tree"""
@@ -118,7 +114,7 @@ class AVL:
                     current_node = current_node._left
                 else:
                     current_node = current_node._right
-        return None # "Value not Found in Tree!"
+        return None 
 
     def find_parent(self, value):
         """Non-recursive parent finder, uses a while loop"""
@@ -167,10 +163,8 @@ class AVL:
             node._right = self._remove_element(temp._value, node._right)
         elif node._left is None:  # One right child
             node = node._right
-                #del temp
         else:                     # One left child
             node = node._left
-        # node._height = self.height(node)
         return self.balance(node)
 
     def balance(self, node):
@@ -314,12 +308,8 @@ class AVL:
         try:
             for _, v in enumerate(_list):
                 _sum = 0
-                # for i in str(v):
-                #     _sum += int(i)
                 _sum = sum(int(ch) for ch in str(v) if ch.isdigit())
                 if _sum > N:
-                    # _list_of_needed_values.append(v)
-                    # _list_of_needed_values.append([v, self.get_height_by_value(v)])
                     d[v] = self.get_height_by_value(v)
         except:
             print("Error: There are not only digits in the Tree but also non-digit chars")
@@ -711,7 +701,7 @@ class TreeManager:
         super().__init__()
         self.file_handler = FileHandler()
         
-        self._tree_name = 'tree_as_list' # for json format, saves tree as list with name '_tree_name'
+        self._tree_name = 'tree_as_list' # for json format, saves tree as list with name 'tree_as_list'
         self._tree_type = 'tree_type'
         self._known_types = {"<class 'int'>": int, "<class 'float'>": float, "<class 'str'>": str}
         self._from = -99 # default int/float value of elements for random creation
