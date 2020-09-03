@@ -10,12 +10,12 @@ import string
 
 class FileHandler():
     def __init__(self):
-        super().__init__() 
-    
+        super().__init__()
+
     def print_data(self, data: dict):
         for k, v in data.items():
-                    print('{}: {}'.format(k, v))
-    
+            print('{}: {}'.format(k, v))
+
     def write_list_to_file(self, path: str, tree_as_list: list):
         try:
             with open(path, 'w', encoding="utf-8") as f:
@@ -25,7 +25,7 @@ class FileHandler():
             print("Error: cannot write the data to the file with this path:")
             print("Path: " + str(path))
         return None
-    
+
     def write_json_file(self, path: str, data: dict, indent=4):
         try:
             with open(path, 'w', encoding="utf-8") as f:
@@ -34,7 +34,7 @@ class FileHandler():
             print("Error: cannot write the data to the file with this path:")
             print("Path: " + str(path))
         return None
-    
+
     def write_json_file_wo_indent(self, path: str, data: dict):
         try:
             with open(path, 'w', encoding="utf-8") as f:
@@ -43,7 +43,7 @@ class FileHandler():
             print("Error: cannot write the data to the file with this path:")
             print("Path: " + str(path))
         return None
-    
+
     def read_json_file(self, path: str):
         try:
             with open(path) as f:
@@ -54,16 +54,20 @@ class FileHandler():
             print("Path: " + str(path))
         return None
 
+
 class AVL:
     """Base Class representing a Binary Search Tree Structure"""
 
     class AVLNode:
         """Private class for storing linked nodes with values and references to their siblings"""
+
         def __init__(self, value):
             """Node Constructor with 3 attributes"""
             self._value = value     # value being added
-            self._left = None       # left sibling node (if val less than parent)
-            self._right = None      # right sibling node (if val greater than parent)
+            # left sibling node (if val less than parent)
+            self._left = None
+            # right sibling node (if val greater than parent)
+            self._right = None
             self._height = 0
 
     def __init__(self):
@@ -75,7 +79,8 @@ class AVL:
 
     def insert_element(self, value):
         """Method to insert an element into the BST"""
-        self._root = self._insert_element(value, self._root)  # insert an element, calls recursive function
+        self._root = self._insert_element(
+            value, self._root)  # insert an element, calls recursive function
 
     def _insert_element(self, value, node):
         """Private method to Insert elements recursively"""
@@ -95,12 +100,12 @@ class AVL:
         current_node = self._root
         while current_node is not None:
             if value == current_node._value:
-                return self.height(current_node) # found
+                return self.height(current_node)  # found
             elif value < current_node._value:
                 current_node = current_node._left
             else:
                 current_node = current_node._right
-        return None 
+        return None
 
     def find(self, value):
         """Return True if value is in tree"""
@@ -108,12 +113,12 @@ class AVL:
         if type(value) == type(self._root):
             while current_node is not None:
                 if value == current_node._value:
-                    return True # found
+                    return True  # found
                 elif value < current_node._value:
                     current_node = current_node._left
                 else:
                     current_node = current_node._right
-        return None 
+        return None
 
     def find_parent(self, value):
         """Non-recursive parent finder, uses a while loop"""
@@ -156,7 +161,7 @@ class AVL:
             node._left = self._remove_element(value, node._left)
         elif value > node._value:
             node._right = self._remove_element(value, node._right)
-        elif node._left is not None and node._right is not None: # 2 kids
+        elif node._left is not None and node._right is not None:  # 2 kids
             temp = self.get_min(node._right)
             node._value = temp._value
             node._right = self._remove_element(temp._value, node._right)
@@ -299,8 +304,8 @@ class AVL:
 
     def __str__(self):
         return self.in_order()
-    
-    def get_list_of_needed_values(self, N): # N means a sum of digits of node
+
+    def get_list_of_needed_values(self, N):  # N means a sum of digits of node
         _list = self.pre_order_to_list([])
         _list_of_needed_values = []
         d = {}
@@ -314,7 +319,7 @@ class AVL:
             print("Error: There are not only digits in the Tree but also non-digit chars")
         return d
 
-    def get_average_height(self): # N means a sum of digits of node
+    def get_average_height(self):  # N means a sum of digits of node
         _list = self.pre_order_to_list([])
         _list_of_heights = []
         value_to_return = 0
@@ -333,6 +338,7 @@ class AVL:
         else:
             print('Empty dictionary of values with height')
 
+
 class Node:
     def __init__(self, x):
         super().__init__()
@@ -342,6 +348,7 @@ class Node:
 
     def __repr__(self):
         return "Node: {v}, {l}, {r}".format(v=self.v, l=self.l, r=self.r)
+
 
 class Tree:
     def __init__(self, _type: type):
@@ -365,18 +372,18 @@ class Tree:
             return int(val)
         except:
             return None
-    
+
     def _try_to_cast_float(self, val):
         try:
             return float(val)
         except:
             return None
-            
+
     def _try_to_cast_str(self, val):
         try:
             return str(val)
-        except:   
-            return None 
+        except:
+            return None
 
     def add(self, val):
         value = self._check_type_of_element(val)
@@ -457,7 +464,8 @@ class Tree:
         if node.r:
             self._pretty_print_tree_to_the_list(
                 list_to_print, node.r, prefix + ("│   " if isLeft else "    "), False)
-        list_to_print.append(prefix + ("└── " if isLeft else "┌── ") + str(node.v))
+        list_to_print.append(
+            prefix + ("└── " if isLeft else "┌── ") + str(node.v))
         if node.l:
             self._pretty_print_tree_to_the_list(
                 list_to_print, node.l, prefix + ("    " if isLeft else "│   "), True)
@@ -474,14 +482,16 @@ class Tree:
         if node.r:
             self._pretty_print_tree_to_the_list_double_spaces(
                 list_to_print, node.r, prefix + ("│      " if isLeft else "         "), False)
-        list_to_print.append(prefix + ("└──  " if isLeft else "┌──  ") + str(node.v))
+        list_to_print.append(
+            prefix + ("└──  " if isLeft else "┌──  ") + str(node.v))
         if node.l:
             self._pretty_print_tree_to_the_list_double_spaces(
                 list_to_print, node.l, prefix + ("         " if isLeft else "│      "), True)
 
     def pretty_print_tree_to_the_list_double_spaces(self):
         list_to_print = []
-        self._pretty_print_tree_to_the_list_double_spaces(list_to_print, self.root)
+        self._pretty_print_tree_to_the_list_double_spaces(
+            list_to_print, self.root)
         return list_to_print
 
     def get_tree_as_list(self):
@@ -537,43 +547,43 @@ class Tree:
                 self._make_from_list(node.r, t_list, 2*i + 2)
         return
 
-    def insert(self, node, key): 
-        if not node: 
-            return Node(key) 
-        if key < node.v: 
-            node.l = self.insert(node.l, key) 
-        else: 
-            node.r = self.insert(node.r, key) 
-        return node 
-    
-    def min_value_node(self, node): 
-        current = node 
-        while(current.l): 
-            current = current.l  
-        return current  
-    
-    def delete_node(self, root, val): 
-        if not root: 
-            return root  
+    def insert(self, node, key):
+        if not node:
+            return Node(key)
+        if key < node.v:
+            node.l = self.insert(node.l, key)
+        else:
+            node.r = self.insert(node.r, key)
+        return node
+
+    def min_value_node(self, node):
+        current = node
+        while(current.l):
+            current = current.l
+        return current
+
+    def delete_node(self, root, val):
+        if not root:
+            return root
         key = self._check_type_of_element(val)
         if key:
-            if key < root.v: 
-                root.l = self.delete_node(root.l, key) 
-            elif(key > root.v): 
-                root.r = self.delete_node(root.r, key) 
-            else: 
-                if not root.l: 
-                    temp = root.r  
-                    root = None 
-                    return temp  
-                elif not root.r: 
-                    temp = root.l 
+            if key < root.v:
+                root.l = self.delete_node(root.l, key)
+            elif(key > root.v):
+                root.r = self.delete_node(root.r, key)
+            else:
+                if not root.l:
+                    temp = root.r
                     root = None
-                    return temp 
-                temp = self.min_value_node(root.r) 
-                root.v = temp.v 
-                root.r = self.delete_node(root.r , temp.v) 
-        return root  
+                    return temp
+                elif not root.r:
+                    temp = root.l
+                    root = None
+                    return temp
+                temp = self.min_value_node(root.r)
+                root.v = temp.v
+                root.r = self.delete_node(root.r, temp.v)
+        return root
 
     def search(self, value_to_seach):
         found = self.find(value_to_seach)
@@ -584,13 +594,13 @@ class Tree:
         else:
             print("Haven't found.")
             return None
-    
+
     def get_list_of_nodes_by_iteration_over_tree(self):
         tree_as_list = []
         self._iterate_over_all_nodes(self.root, tree_as_list)
         # print(tree_as_list)
         return tree_as_list
-    
+
     def _iterate_over_all_nodes(self, node: Node, l: list):
         if not node:
             return
@@ -601,8 +611,8 @@ class Tree:
             self._iterate_over_all_nodes(node.l, l)
         if node.r:
             l.append(node.r)
-            self._iterate_over_all_nodes(node.r, l) 
-            
+            self._iterate_over_all_nodes(node.r, l)
+
     def print_leaves_without_nodes(self, node: Node):
         if not node:
             return
@@ -612,8 +622,8 @@ class Tree:
         if node.l:
             self.print_leaves_without_nodes(node.l)
         if node.r:
-            self.print_leaves_without_nodes(node.r) 
-    
+            self.print_leaves_without_nodes(node.r)
+
     def _process_frequency(self):
         d = {}
         tree_as_list = self.get_tree_as_list()
@@ -624,36 +634,36 @@ class Tree:
                 if d[item] >= count:
                     count, itm = d[item], item
         return d
-    
+
     def print_the_most_frequent_element(self):
         list_of_frequency = list(reversed(self._get_list_of_frequency()))
-        
+
         counter = 0
         if list_of_frequency:
             for i, v in enumerate(list_of_frequency):
                 print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
-                if v[1]> counter:
+                if v[1] > counter:
                     counter = v[1]
-                
-        raw_list_of_most_common_elements = []    
+
+        raw_list_of_most_common_elements = []
         for i, v in enumerate(list_of_frequency):
             if v[1] == counter:
                 raw_list_of_most_common_elements.append(v[1])
-                
+
         list_of_counters = []
         for value in raw_list_of_most_common_elements:
             if value not in list_of_counters:
                 list_of_counters.append(value)
-                
+
         list_of_most_common_elements = []
         for i, v in enumerate(list_of_frequency):
             for _, _v in enumerate(list_of_counters):
                 if v[1] == _v:
                     list_of_most_common_elements.append([v[0], v[1]])
         return list_of_most_common_elements
-    
+
     def _get_list_of_frequency(self):
-        dict_frequency = self._process_frequency()     
+        dict_frequency = self._process_frequency()
         raw_list_of_frequency = []
         for key, value in sorted(dict_frequency.items(), key=lambda item: item[1]):
             raw_list_of_frequency.append([key, value])
@@ -661,12 +671,12 @@ class Tree:
         list_of_frequency = []
         for v in raw_list_of_frequency:
             list_of_frequency.append([v[0], v[1]])
-        
+
         return list_of_frequency
-    
+
     def get_list_of_frequency(self):
         return list(reversed(self._get_list_of_frequency()))
-    
+
     def print_a_few_most_frequent_elements(self):
         number_of_elements = 5
         list_of_frequency = list(reversed(self._get_list_of_frequency()))
@@ -674,10 +684,11 @@ class Tree:
             for i, v in enumerate(list_of_frequency):
                 if i < number_of_elements:
                     try:
-                        print('Value: ' + str(v[0]) + ', frequency: ' + str(v[1]))
+                        print('Value: ' + str(v[0]) +
+                              ', frequency: ' + str(v[1]))
                     except:
                         pass
-    
+
     def print_most_frequent_element(self):
         list_of_frequency = self._get_list_of_frequency()
         if list_of_frequency:
@@ -685,7 +696,7 @@ class Tree:
             print('Frequency: ' + str(list_of_frequency[-1][1]))
         else:
             print('Tree is empty.')
-    
+
     def print_list_of_frequency(self):
         list_of_frequency = self._get_list_of_frequency()
         if list_of_frequency:
@@ -695,23 +706,26 @@ class Tree:
             print('Tree is empty.')
 
 
-class TreeManager:  
+class TreeManager:
     def __init__(self):
         super().__init__()
         self.file_handler = FileHandler()
-        
-        self._tree_name = 'tree_as_list' # for json format, saves tree as list with name 'tree_as_list'
+
+        # for json format, saves tree as list with name 'tree_as_list'
+        self._tree_name = 'tree_as_list'
         self._tree_type = 'tree_type'
-        self._known_types = {"<class 'int'>": int, "<class 'float'>": float, "<class 'str'>": str}
-        self._from = -99 # default int/float value of elements for random creation
-        self._to = 99 # default int/float value of elements for random creation
+        self._known_types = {"<class 'int'>": int,
+                             "<class 'float'>": float, "<class 'str'>": str}
+        self._from = -99  # default int/float value of elements for random creation
+        self._to = 99  # default int/float value of elements for random creation
         self._min_number_of_elements = 0
-        self._max_number_of_elements = 1024 # it is not actual max number
-    
+        self._max_number_of_elements = 1024  # it is not actual max number
+
     def _generate_list_of_int_with_repetitions(self, number_of_elements: int):
-        _list = [random.randint(self._from, self._to) for i in range(number_of_elements)]
+        _list = [random.randint(self._from, self._to)
+                 for i in range(number_of_elements)]
         return _list
-    
+
     def _generate_list_of_floats_wo_repetitions(self, number_of_elements: int):
         _list = []
         seen = set()
@@ -722,31 +736,31 @@ class TreeManager:
             seen.add(x)
             _list.append(x)
         return _list
-    
+
     def _generate_list_of_strings(self, number_of_elements: int):
         _list = []
         for x in range(number_of_elements):
             _list.append(self._generate_single_string())
         return _list
-    
+
     def _generate_single_string(self, size=8):
         return ''.join(random.SystemRandom().choice(
             string.ascii_uppercase + string.digits) for _ in range(size))
-    
+
     def _validate_number_of_elements(self, number_of_elements: int):
-        if self._min_number_of_elements <= number_of_elements < self._max_number_of_elements: 
+        if self._min_number_of_elements <= number_of_elements < self._max_number_of_elements:
             return number_of_elements
         return 0
-    
+
     def _validate_raw_data(self, raw_data: dict):
         try:
             d = {self._tree_type: raw_data[self._tree_type],
-                self._tree_name: raw_data[self._tree_name]}
+                 self._tree_name: raw_data[self._tree_name]}
             return d
         except:
             print('Error: Input is not correct.')
         return None
-    
+
     def _create_tree_out_of_the_list_with_validation(self, d: dict, input_key: str, input_type: str):
         _list = d[input_key]
         _type = d[input_type]
@@ -765,21 +779,24 @@ class TreeManager:
             for _, v in enumerate(_list):
                 _tree.add(v)
         return _tree
-    
+
     def create_new_random_tree(self, input_type: str, number_of_elements: int):
         try:
-            _number_of_elements = self._validate_number_of_elements(number_of_elements)
+            _number_of_elements = self._validate_number_of_elements(
+                number_of_elements)
             if input_type == "<class 'int'>":
-                _list = self._generate_list_of_int_with_repetitions(_number_of_elements) 
+                _list = self._generate_list_of_int_with_repetitions(
+                    _number_of_elements)
             if input_type == "<class 'str'>":
-                _list = self._generate_list_of_strings(_number_of_elements)    
+                _list = self._generate_list_of_strings(_number_of_elements)
             if input_type == "<class 'float'>":
-                _list = self._generate_list_of_floats_wo_repetitions(_number_of_elements)
+                _list = self._generate_list_of_floats_wo_repetitions(
+                    _number_of_elements)
             return self._create_tree_out_of_the_list_wo_validation(_list, input_type)
         except:
             print('Error: Could not generate the list.')
         return None
-    
+
     def _process_the_tree(self, tree: Tree):
         # data_to_dump = {self._tree_name: tuple(tree.get_tree_as_list())} # with null
         data_to_dump = {
@@ -787,30 +804,30 @@ class TreeManager:
             self._tree_name: tuple([i for i in tree.get_tree_as_list() if i])
         }
         return data_to_dump
-    
+
     def write_tree_to_json_file_as_list(self, tree: Tree, path: str):
         try:
             data_to_dump = self._process_the_tree(tree)
             self.file_handler.write_json_file(path, data_to_dump)
-            return 
+            return
         except:
             print('Error: Cannot write the data to the file.')
         return None
-    
+
     def write_tree_to_json_file_as_list_wo_indent(self, tree: Tree, path: str):
         try:
             data_to_dump = self._process_the_tree(tree)
             self.file_handler.write_json_file_wo_indent(path, data_to_dump)
-            return 
+            return
         except:
             print('Error: Cannot write the data to the file.')
         return None
 
     def write_tree_to_file_as_tree(self, tree: Tree, path: str):
         try:
-            tree_as_list = tree.pretty_print_tree_to_the_list()  
+            tree_as_list = tree.pretty_print_tree_to_the_list()
             self.file_handler.write_list_to_file(path, tree_as_list)
-            return 
+            return
         except:
             print('Error: Cannot write the data to the file.')
         return None
@@ -825,109 +842,109 @@ class TreeManager:
         return None
 
 
-class GlobalVariables: 
+class GlobalVariables:
     def __init__(self):
         self._dict_eng = dict(  # usage: self._global_variables.default_dict.get('
-            yes = 'Yes',
-            no = 'No',
-            instance = 'Instance ',
-            file = 'File',
-            open = 'Open...',
-            close_project = 'Close Project',
-            export_instance_as_png = 'Export instance as PNG',
-            instructions = 'Instructions',
-            show_instructions = 'Show instructions',
-            about = 'About',
-            show_about = 'Show about',
-            save_file = 'Save File',
-            open_project = 'Open Project',
-            options = 'Options',
-            additional_options_of_the_instance = 'Additional options',
-            update_the_output = 'Update the output',
-            clear_the_output = 'Clear the output',
-            create_int_tree = 'Create tree (int)',
-            create_float_tree = 'Create tree (float)',
-            create_str_tree = 'Create tree (str)',
-            delete_element = 'Delete element',
-            add_element = 'Add element',
-            export_tree_as_list = 'Save binary tree (as *.json)',
-            export_avl_tree_as_list = 'Save AVL tree (as *.json)',
-            export_tree_as_tree = 'Save binary tree (as *.txt)',
-            export_avl_tree_as_tree = 'Save AVL tree (as *.txt)',
-            import_tree = 'Import tree from the file',
-            import_avl_tree = 'Import AVL tree from the file',
-            print_average_height_of_avl_tree = 'Print average height of AVL tree',
-            average_height_of_avl_tree = 'Average height of AVL tree: ',
-            tree_type = 'Type of tree elements: ',
-            pretty_print_tree_to_text_edit = 'Show the tree',
-            pretty_print_avl_tree_to_text_edit = 'Show the AVL tree',
-            delete_tree = 'Delete the tree',
-            print_most_frequent_elements = 'Print a few the most frequent elements',
-            print_list_of_frequency = 'Print the list of frequency',
-            print_list_of_needed_values = 'Print list of values, which sum of digits is more than N',
-            value = 'Value: ',
-            frequency = 'Frequency: ',
-            height = 'Height: ',
-            confirm_your_choice = 'Confirm Your choice',
-            are_you_sure_you_want_to_delete = 'Are you sure you want to delete all instances?',
-            add_a_new_instance_menu = 'Add a new instance menu',
-            delete_all_instances = 'Delete all instances',
-            confirm_exit = 'Confirm exit',
-            are_you_sure_you_want_to_exit = 'Are you sure you want to exit?',
-            about_window_title = 'About',
-            about_window_creators_name = 'Pavlov Alex',
-            about_window_creators_github = 'https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
+            yes='Yes',
+            no='No',
+            instance='Instance ',
+            file='File',
+            open='Open...',
+            close_project='Close Project',
+            export_instance_as_png='Export instance as PNG',
+            instructions='Instructions',
+            show_instructions='Show instructions',
+            about='About',
+            show_about='Show about',
+            save_file='Save File',
+            open_project='Open Project',
+            options='Options',
+            additional_options_of_the_instance='Additional options',
+            update_the_output='Update the output',
+            clear_the_output='Clear the output',
+            create_int_tree='Create tree (int)',
+            create_float_tree='Create tree (float)',
+            create_str_tree='Create tree (str)',
+            delete_element='Delete element',
+            add_element='Add element',
+            export_tree_as_list='Save binary tree (as *.json)',
+            export_avl_tree_as_list='Save AVL tree (as *.json)',
+            export_tree_as_tree='Save binary tree (as *.txt)',
+            export_avl_tree_as_tree='Save AVL tree (as *.txt)',
+            import_tree='Import tree from the file',
+            import_avl_tree='Import AVL tree from the file',
+            print_average_height_of_avl_tree='Print average height of AVL tree',
+            average_height_of_avl_tree='Average height of AVL tree: ',
+            tree_type='Type of tree elements: ',
+            pretty_print_tree_to_text_edit='Show the tree',
+            pretty_print_avl_tree_to_text_edit='Show the AVL tree',
+            delete_tree='Delete the tree',
+            print_most_frequent_elements='Print a few the most frequent elements',
+            print_list_of_frequency='Print the list of frequency',
+            print_list_of_needed_values='Print list of values, which sum of digits is more than N',
+            value='Value: ',
+            frequency='Frequency: ',
+            height='Height: ',
+            confirm_your_choice='Confirm Your choice',
+            are_you_sure_you_want_to_delete='Are you sure you want to delete all instances?',
+            add_a_new_instance_menu='Add a new instance menu',
+            delete_all_instances='Delete all instances',
+            confirm_exit='Confirm exit',
+            are_you_sure_you_want_to_exit='Are you sure you want to exit?',
+            about_window_title='About',
+            about_window_creators_name='Pavlov Alex',
+            about_window_creators_github='https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
         )
         self._dict_rus = dict(
-            yes = 'Да',
-            no = 'Нет',
-            instance = 'Экземпляр объекта ',
-            file = 'Файл',
-            open = 'Открыть...',
-            close_project = 'Закрыть проект',
-            export_instance_as_png = 'Экспортировать как PNG',
-            instructions = 'Инструкции',
-            show_instructions = 'Показать инструкции',
-            about = 'Об авторе',
-            show_about = 'Показать информацию об авторе',
-            save_file = 'Сохранить файл',
-            open_project = 'Открыть проект',
-            options = 'Настройки',
-            additional_options_of_the_instance = 'Дополнительные настройки',
-            update_the_output = 'Обновить отображение',
-            clear_the_output = 'Очистить окно вывода',
-            create_int_tree = 'Создать дерево (int)',
-            create_float_tree = 'Создать дерево (float)',
-            create_str_tree = 'Создать дерево (str)',
-            delete_element = 'Удалить элемент',
-            add_element = 'Добавить элемент',
-            export_tree_as_list = 'Экспортировать дерево (*.json)',
-            export_avl_tree_as_list = 'Экспортировать АВЛ дерево (*.json)',
-            export_tree_as_tree = 'Экспортировать дерево (*.txt)',
-            export_avl_tree_as_tree = 'Экспортировать АВЛ дерево (*.txt)',
-            import_tree = 'Импортировать дерево из файла',
-            import_avl_tree = 'Импортировать АВЛ дерево из файла',
-            print_average_height_of_avl_tree = 'Отобразить среднюю высоту АВЛ дерева',
-            average_height_of_avl_tree = 'Средняя высота АВЛ дерева: ',
-            tree_type = 'Тип элементов дерева: ',
-            pretty_print_tree_to_text_edit = 'Отобразить дерево',
-            pretty_print_avl_tree_to_text_edit = 'Отобразить АВЛ дерево',
-            delete_tree = 'Удалить дерево',
-            print_most_frequent_elements = 'Отобразить самые часто встречающиеся элементы',
-            print_list_of_frequency = 'Отобразить все элементы с количеством их повторений',
-            print_list_of_needed_values = 'Отобразить элементы, сумма цифр которых больше N',
-            value = 'Значение: ',
-            frequency = 'Количество повторов: ',
-            height = 'Уровень: ',
-            confirm_your_choice = 'Подтвердите свой выбор',
-            are_you_sure_you_want_to_delete = 'Вы уверены, что хотите удалить все объекты?',
-            add_a_new_instance_menu = 'Добавить меню для нового экземпляра объекта',
-            delete_all_instances = 'Удалить все экземпляры объектов',
-            confirm_exit = 'Подтвердите выход',
-            are_you_sure_you_want_to_exit = 'Вы уверены, что хотите выйти?',
-            about_window_title = 'Об авторе',
-            about_window_creators_name = 'Павлов Александр',
-            about_window_creators_github = 'https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
+            yes='Да',
+            no='Нет',
+            instance='Экземпляр объекта ',
+            file='Файл',
+            open='Открыть...',
+            close_project='Закрыть проект',
+            export_instance_as_png='Экспортировать как PNG',
+            instructions='Инструкции',
+            show_instructions='Показать инструкции',
+            about='Об авторе',
+            show_about='Показать информацию об авторе',
+            save_file='Сохранить файл',
+            open_project='Открыть проект',
+            options='Настройки',
+            additional_options_of_the_instance='Дополнительные настройки',
+            update_the_output='Обновить отображение',
+            clear_the_output='Очистить окно вывода',
+            create_int_tree='Создать дерево (int)',
+            create_float_tree='Создать дерево (float)',
+            create_str_tree='Создать дерево (str)',
+            delete_element='Удалить элемент',
+            add_element='Добавить элемент',
+            export_tree_as_list='Экспортировать дерево (*.json)',
+            export_avl_tree_as_list='Экспортировать АВЛ дерево (*.json)',
+            export_tree_as_tree='Экспортировать дерево (*.txt)',
+            export_avl_tree_as_tree='Экспортировать АВЛ дерево (*.txt)',
+            import_tree='Импортировать дерево из файла',
+            import_avl_tree='Импортировать АВЛ дерево из файла',
+            print_average_height_of_avl_tree='Отобразить среднюю высоту АВЛ дерева',
+            average_height_of_avl_tree='Средняя высота АВЛ дерева: ',
+            tree_type='Тип элементов дерева: ',
+            pretty_print_tree_to_text_edit='Отобразить дерево',
+            pretty_print_avl_tree_to_text_edit='Отобразить АВЛ дерево',
+            delete_tree='Удалить дерево',
+            print_most_frequent_elements='Отобразить самые часто встречающиеся элементы',
+            print_list_of_frequency='Отобразить все элементы с количеством их повторений',
+            print_list_of_needed_values='Отобразить элементы, сумма цифр которых больше N',
+            value='Значение: ',
+            frequency='Количество повторов: ',
+            height='Уровень: ',
+            confirm_your_choice='Подтвердите свой выбор',
+            are_you_sure_you_want_to_delete='Вы уверены, что хотите удалить все объекты?',
+            add_a_new_instance_menu='Добавить меню для нового экземпляра объекта',
+            delete_all_instances='Удалить все экземпляры объектов',
+            confirm_exit='Подтвердите выход',
+            are_you_sure_you_want_to_exit='Вы уверены, что хотите выйти?',
+            about_window_title='Об авторе',
+            about_window_creators_name='Павлов Александр',
+            about_window_creators_github='https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
         )
         self.default_dict = self._dict_rus
         self.default_dict = self._dict_eng
@@ -936,14 +953,16 @@ class GlobalVariables:
 class MenuInstance:
     def __init__(self):
         self._global_variables = GlobalVariables()
-        self.id_of_instance = 0  # without id you couldn't get proper instance by call from another class
-        self.name = self._global_variables.default_dict.get('instance')  # name of the instance
+        # without id you couldn't get proper instance by call from another class
+        self.id_of_instance = 0
+        self.name = self._global_variables.default_dict.get(
+            'instance')  # name of the instance
         self.tree = Tree(int)
         self.avl_tree = Tree(int)
         self.number_of_elements = 0
         self.element_name = ''
         self.value_to_check_the_sum_of_digits_of_node = 0
-    
+
 
 class GrowingTextEdit(QtWidgets.QTextEdit):
     def __init__(self, *args, **kwargs):
@@ -960,7 +979,8 @@ class GrowingTextEdit(QtWidgets.QTextEdit):
             self.textCursor().deletePreviousChar()
 
 
-class CollapsibleBox(QtWidgets.QWidget):  # dynamically expandable box of gui elements
+# dynamically expandable box of gui elements
+class CollapsibleBox(QtWidgets.QWidget):
     def __init__(self, title="", parent=None):
 
         super(CollapsibleBox, self).__init__(parent)
@@ -968,7 +988,8 @@ class CollapsibleBox(QtWidgets.QWidget):  # dynamically expandable box of gui el
         self.toggle_button = QtWidgets.QToolButton(
             text=title, checkable=True, checked=False)
         self.toggle_button.setStyleSheet("QToolButton { border: none; }")
-        self.toggle_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.toggle_button.setToolButtonStyle(
+            QtCore.Qt.ToolButtonTextBesideIcon)
         self.toggle_button.setArrowType(QtCore.Qt.RightArrow)
         self.toggle_button.pressed.connect(self.on_pressed)
 
@@ -1049,14 +1070,15 @@ class InstructionWindow(QtWidgets.QMainWindow):
         layout.setSpacing(1)
         layout.setContentsMargins(2, 2, 2, 2)
         w.setLayout(layout)
-        
-        self.title = self._global_variables.default_dict.get('instructions') 
+
+        self.title = self._global_variables.default_dict.get('instructions')
         self.left = 100
         self.top = 100
         self.windowWidth = 300
         self.windowHeight = 400
-        self.setWindowTitle(self.title)  
-        self.setGeometry(self.left, self.top, self.windowWidth, self.windowHeight) 
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top,
+                         self.windowWidth, self.windowHeight)
 
         scroll = QtWidgets.QScrollArea()
         scroll.setWidgetResizable(True)
@@ -1074,26 +1096,29 @@ class InstructionWindow(QtWidgets.QMainWindow):
         frame.setLayout(vbox)
 
         label_text = QLabel()
-        label_text.setText(self._global_variables.default_dict.get('instructions'))
+        label_text.setText(
+            self._global_variables.default_dict.get('instructions'))
         vbox.addWidget(label_text)
 
         verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
-                                                QtWidgets.QSizePolicy.Expanding)
+                                               QtWidgets.QSizePolicy.Expanding)
         vbox.addItem(verticalSpacer)
         text_layout.addWidget(frame)
 
 
-class AboutWindow(QtWidgets.QMainWindow):  
+class AboutWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AboutWindow, self).__init__(parent)
         self._global_variables = GlobalVariables()
-        self.title = self._global_variables.default_dict.get('about_window_title') 
+        self.title = self._global_variables.default_dict.get(
+            'about_window_title')
         self.left = 100
         self.top = 100
         self.windowWidth = 300
         self.windowHeight = 400
-        self.setWindowTitle(self.title)  
-        self.setGeometry(self.left, self.top, self.windowWidth, self.windowHeight) 
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top,
+                         self.windowWidth, self.windowHeight)
 
         w = QWidget()
         self.setCentralWidget(w)
@@ -1101,22 +1126,24 @@ class AboutWindow(QtWidgets.QMainWindow):
         layout.setSpacing(1)
         layout.setContentsMargins(2, 2, 2, 2)
         w.setLayout(layout)
-        
+
         frame = QtWidgets.QFrame()
         frame.setFrameStyle(QtWidgets.QFrame.Panel | QtWidgets.QFrame.Plain)
         vbox = QtWidgets.QVBoxLayout()
         frame.setLayout(vbox)
 
         label_creator_name = QLabel()
-        creator_name = self._global_variables.default_dict.get('about_window_creators_name') 
+        creator_name = self._global_variables.default_dict.get(
+            'about_window_creators_name')
         label_creator_name.setText(creator_name)
         vbox.addWidget(label_creator_name)
-        
+
         label_creator_github = QLabel()
-        creator_github = self._global_variables.default_dict.get('about_window_creators_github') 
+        creator_github = self._global_variables.default_dict.get(
+            'about_window_creators_github')
         label_creator_github.setText(creator_github)
         vbox.addWidget(label_creator_github)
-        
+
         vbox.setAlignment(Qt.AlignCenter)
         layout.addWidget(frame)
 
@@ -1142,16 +1169,17 @@ class Application(QtWidgets.QMainWindow):
         self.showMaximized()
         self.mainMenu = QMenuBar(self)
         self.setMenuBar(self.mainMenu)
-        
+
         self.set_a_project()
-        
+
         menu_file = self.mainMenu.addMenu(
             self._global_variables.default_dict.get('file'))
-        
+
         file_action_export_as_png = menu_file.addAction(
             self._global_variables.default_dict.get('export_instance_as_png'))
-        file_action_export_as_png.triggered.connect(self.export_instance_as_png)
-        
+        file_action_export_as_png.triggered.connect(
+            self.export_instance_as_png)
+
         file_action_close = menu_file.addAction(
             self._global_variables.default_dict.get('close_project'))
         file_action_close.triggered.connect(self.close_application)
@@ -1170,16 +1198,17 @@ class Application(QtWidgets.QMainWindow):
 
     def export_instance_as_png(self):
         try:
-            name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
-                                                        self._global_variables.default_dict.get(
-                                                            'save_file'),
-                                                         '.png', "Image (*.png *.jpg *.tif)")
+            name, _ = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                            self._global_variables.default_dict.get(
+                                                                'save_file'),
+                                                            '.png', "Image (*.png *.jpg *.tif)")
             if name:
                 img = self.connector.current_widget_to_export.grab()
                 img.save(name)
         except:
-            print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-            
+            print(
+                'Oops! An Error: There is a problem with a file, which you have tried to save.')
+
     def show_instructions(self):
         self.instruction_window.show()
 
@@ -1192,8 +1221,9 @@ class Application(QtWidgets.QMainWindow):
         except:
             pass
 
-    def set_options_dock(self):  
-        self.dockWidget = QDockWidget(self._global_variables.default_dict.get('options'), self)
+    def set_options_dock(self):
+        self.dockWidget = QDockWidget(
+            self._global_variables.default_dict.get('options'), self)
         self.connector.list_of_widgets.append(self.dockWidget)
         self.dockWidget.setFeatures(QtWidgets.QDockWidget.DockWidgetFloatable |
                                     QtWidgets.QDockWidget.DockWidgetMovable)
@@ -1205,8 +1235,10 @@ class Application(QtWidgets.QMainWindow):
 
         button = QPushButton()
         button_update_the_output = QPushButton()
-        button_update_the_output.setText(self._global_variables.default_dict.get('clear_the_output'))
-        button_update_the_output.setStyleSheet('QPushButton {background-color:rgb(170, 255, 0); color: black;}')
+        button_update_the_output.setText(
+            self._global_variables.default_dict.get('clear_the_output'))
+        button_update_the_output.setStyleSheet(
+            'QPushButton {background-color:rgb(170, 255, 0); color: black;}')
         qvbox_layout.addWidget(button_update_the_output)
 
         scroll = QtWidgets.QScrollArea()
@@ -1216,25 +1248,30 @@ class Application(QtWidgets.QMainWindow):
         scrollContents = QtWidgets.QWidget()
         scroll.setWidget(scrollContents)
 
-        self.QVBox_layout_of_dock_options = QtWidgets.QVBoxLayout(scrollContents)
+        self.QVBox_layout_of_dock_options = QtWidgets.QVBoxLayout(
+            scrollContents)
         font = QtGui.QFont()
         font.setPointSize(11)
 
         def button_update_the_output_clicked(arg):
-            self.clear_textedit()            
+            self.clear_textedit()
 
-        button_update_the_output.clicked.connect(button_update_the_output_clicked)
+        button_update_the_output.clicked.connect(
+            button_update_the_output_clicked)
 
         def button_add_a_new_instance_menu_new_clicked(arg):
             self.set_option_fields()
 
         def button_delete_all_clicked(arg):
             msg = QMessageBox()
-            msg.setWindowTitle(self._global_variables.default_dict.get('confirm_your_choice'))
-            msg.setText(self._global_variables.default_dict.get('are_you_sure_you_want_to_delete'))
+            msg.setWindowTitle(
+                self._global_variables.default_dict.get('confirm_your_choice'))
+            msg.setText(self._global_variables.default_dict.get(
+                'are_you_sure_you_want_to_delete'))
             okButton = msg.addButton(self._global_variables.default_dict.get('yes'),
-                                      QMessageBox.AcceptRole)
-            msg.addButton(self._global_variables.default_dict.get('no'), QMessageBox.RejectRole)
+                                     QMessageBox.AcceptRole)
+            msg.addButton(self._global_variables.default_dict.get(
+                'no'), QMessageBox.RejectRole)
             msg.exec()
             if msg.clickedButton() == okButton:
                 self.text_edit.clear()
@@ -1248,12 +1285,15 @@ class Application(QtWidgets.QMainWindow):
                 pass
 
         button_add_a_new_instance_menu = QPushButton()
-        button_add_a_new_instance_menu.setText(self._global_variables.default_dict.get('add_a_new_instance_menu'))
-        button_add_a_new_instance_menu.clicked.connect(button_add_a_new_instance_menu_new_clicked)
+        button_add_a_new_instance_menu.setText(
+            self._global_variables.default_dict.get('add_a_new_instance_menu'))
+        button_add_a_new_instance_menu.clicked.connect(
+            button_add_a_new_instance_menu_new_clicked)
         qvbox_layout.addWidget(button_add_a_new_instance_menu)
 
         button_delete_all = QPushButton()
-        button_delete_all.setText(self._global_variables.default_dict.get('delete_all_instances'))
+        button_delete_all.setText(
+            self._global_variables.default_dict.get('delete_all_instances'))
         button_delete_all.clicked.connect(button_delete_all_clicked)
         qvbox_layout.addWidget(button_delete_all)
 
@@ -1274,12 +1314,14 @@ class Application(QtWidgets.QMainWindow):
         vbox = QtWidgets.QVBoxLayout()
         frame.setLayout(vbox)
         name = GrowingTextEdit()
-        name.setText(instance_menu.name + str(self.connector.number_of_menu_instances))
-        self.connector.list_of_menu_instances[instance_menu.id_of_instance].name = name.toPlainText()
+        name.setText(instance_menu.name +
+                     str(self.connector.number_of_menu_instances))
+        self.connector.list_of_menu_instances[instance_menu.id_of_instance].name = name.toPlainText(
+        )
         name.setMinimumHeight(27)
         name.setMaximumHeight(27)
 
-        def name_changed(): 
+        def name_changed():
             try:
                 self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].name = name.toPlainText()
@@ -1301,7 +1343,7 @@ class Application(QtWidgets.QMainWindow):
                 instance_menu.id_of_instance].tree.pretty_print_tree_to_the_list_double_spaces()
             for i, v in enumerate(tree_as_list):
                 self.text_edit.append(v)
-                
+
         def update_avl_tree():
             avl = AVL()
             # _avl_tree_as_list = self.connector.list_of_menu_instances[
@@ -1312,13 +1354,15 @@ class Application(QtWidgets.QMainWindow):
             for i, v in enumerate(_avl_tree_as_list):
                 avl.insert_element(v)
             pre_order = avl.pre_order_to_list([])
-            self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.delete_tree()
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.delete_tree(
+            )
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree._type = \
                 self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree._type
             if pre_order:
                 for _, v in enumerate(pre_order):
-                    self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.add(v)
-                
+                    self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.add(
+                        v)
+
         def print_avl_tree():
             update_info_label()
             self.text_edit.clear()
@@ -1327,7 +1371,7 @@ class Application(QtWidgets.QMainWindow):
                 instance_menu.id_of_instance].avl_tree.pretty_print_tree_to_the_list_double_spaces()
             for i, v in enumerate(tree_as_list):
                 self.text_edit.append(v)
-                
+
         def print_list(list_of_frequency: list, number_of_elements: int):
             self.text_edit.clear()
             if list_of_frequency:
@@ -1339,7 +1383,7 @@ class Application(QtWidgets.QMainWindow):
                                 self._global_variables.default_dict.get('frequency') + str(v[1]))
                         except:
                             pass
-        
+
         def _print_list(list_of_frequency):
             self.text_edit.clear()
             if list_of_frequency:
@@ -1350,7 +1394,7 @@ class Application(QtWidgets.QMainWindow):
                             self._global_variables.default_dict.get('frequency') + str(v[1]))
                     except:
                         pass
-        
+
         def print_dict(_dict: dict):
             self.text_edit.clear()
             for v, h in _dict.items():
@@ -1364,18 +1408,22 @@ class Application(QtWidgets.QMainWindow):
         button_pretty_print_tree_to_text_edit = QPushButton()
         button_pretty_print_tree_to_text_edit.setText(
             self._global_variables.default_dict.get('pretty_print_tree_to_text_edit'))
+
         def button_pretty_print_tree_to_text_edit_clicked(arg):
             print_tree()
-        button_pretty_print_tree_to_text_edit.clicked.connect(button_pretty_print_tree_to_text_edit_clicked)
-        
+        button_pretty_print_tree_to_text_edit.clicked.connect(
+            button_pretty_print_tree_to_text_edit_clicked)
+
         button_pretty_print_avl_tree_to_text_edit = QPushButton()
         button_pretty_print_avl_tree_to_text_edit.setText(
             self._global_variables.default_dict.get('pretty_print_avl_tree_to_text_edit'))
+
         def button_pretty_print_avl_tree_to_text_edit_clicked(arg):
             if self.connector.list_of_menu_instances[
-                instance_menu.id_of_instance].avl_tree.pretty_print_tree_to_the_list_double_spaces():
+                    instance_menu.id_of_instance].avl_tree.pretty_print_tree_to_the_list_double_spaces():
                 print_avl_tree()
-        button_pretty_print_avl_tree_to_text_edit.clicked.connect(button_pretty_print_avl_tree_to_text_edit_clicked)
+        button_pretty_print_avl_tree_to_text_edit.clicked.connect(
+            button_pretty_print_avl_tree_to_text_edit_clicked)
 
         def set_number_of_elements():
             spinBox.setMaximum(400)
@@ -1389,11 +1437,13 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(spinBox)
 
         button_create_int_tree = QPushButton()
-        button_create_int_tree.setText(self._global_variables.default_dict.get('create_int_tree'))
+        button_create_int_tree.setText(
+            self._global_variables.default_dict.get('create_int_tree'))
+
         def button_create_int_tree_clicked(arg):
             tree_manager = TreeManager()
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree =\
-                 tree_manager.create_new_random_tree("<class 'int'>", self.connector.list_of_menu_instances[
+                tree_manager.create_new_random_tree("<class 'int'>", self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements)
             update_avl_tree()
             print_tree()
@@ -1401,38 +1451,43 @@ class Application(QtWidgets.QMainWindow):
         vbox.addWidget(button_create_int_tree)
 
         button_create_float_tree = QPushButton()
-        button_create_float_tree.setText(self._global_variables.default_dict.get('create_float_tree'))
+        button_create_float_tree.setText(
+            self._global_variables.default_dict.get('create_float_tree'))
+
         def button_create_float_tree_clicked(arg):
             tree_manager = TreeManager()
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree =\
-                 tree_manager.create_new_random_tree("<class 'float'>", self.connector.list_of_menu_instances[
+                tree_manager.create_new_random_tree("<class 'float'>", self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements)
             update_avl_tree()
             print_tree()
-        button_create_float_tree.clicked.connect(button_create_float_tree_clicked)
+        button_create_float_tree.clicked.connect(
+            button_create_float_tree_clicked)
         vbox.addWidget(button_create_float_tree)
 
         button_create_str_tree = QPushButton()
-        button_create_str_tree.setText(self._global_variables.default_dict.get('create_str_tree'))
+        button_create_str_tree.setText(
+            self._global_variables.default_dict.get('create_str_tree'))
+
         def button_create_str_tree_clicked(arg):
             tree_manager = TreeManager()
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree =\
-                 tree_manager.create_new_random_tree("<class 'str'>", self.connector.list_of_menu_instances[
+                tree_manager.create_new_random_tree("<class 'str'>", self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].number_of_elements)
             update_avl_tree()
             print_tree()
         button_create_str_tree.clicked.connect(button_create_str_tree_clicked)
         vbox.addWidget(button_create_str_tree)
-        
+
         empty_label_0 = QLabel('')
         vbox.addWidget(empty_label_0)
-        
+
         element_name = GrowingTextEdit()
         element_name.setText('')
         element_name.setMinimumHeight(27)
         element_name.setMaximumHeight(27)
 
-        def element_name_changed(): 
+        def element_name_changed():
             try:
                 self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].element_name = element_name.toPlainText()
@@ -1442,10 +1497,11 @@ class Application(QtWidgets.QMainWindow):
 
         element_name.textChanged.connect(element_name_changed)
         vbox.addWidget(element_name)
-        
+
         button_add_element = QPushButton()
         button_add_element.setText(
             self._global_variables.default_dict.get('add_element'))
+
         def button_add_element_clicked(arg):
             tree_manager = TreeManager()
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.add(
@@ -1455,10 +1511,11 @@ class Application(QtWidgets.QMainWindow):
             print_tree()
         button_add_element.clicked.connect(button_add_element_clicked)
         vbox.addWidget(button_add_element)
-        
+
         button_delete_element = QPushButton()
         button_delete_element.setText(
             self._global_variables.default_dict.get('delete_element'))
+
         def button_delete_element_clicked(arg):
             tree_manager = TreeManager()
             self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.delete_node(
@@ -1469,19 +1526,20 @@ class Application(QtWidgets.QMainWindow):
             print_tree()
         button_delete_element.clicked.connect(button_delete_element_clicked)
         vbox.addWidget(button_delete_element)
-        
+
         empty_label_1 = QLabel('')
         vbox.addWidget(empty_label_1)
-        
+
         button_import_tree = QPushButton()
         button_import_tree.setText(
             self._global_variables.default_dict.get('import_tree'))
+
         def button_import_tree_clicked(arg):
             try:
                 filename, _ = QFileDialog.getOpenFileName(self,
-                                                           self._global_variables.default_dict.get(
-                                                               'open_project'),'',
-                                                            "Json Files (*.json)",
+                                                          self._global_variables.default_dict.get(
+                                                              'open_project'), '',
+                                                          "Json Files (*.json)",
                                                           options=QFileDialog.DontUseNativeDialog)
                 if (filename):
                     tree_manager = TreeManager()
@@ -1489,11 +1547,11 @@ class Application(QtWidgets.QMainWindow):
                         tree_manager.read_tree_from_json_file(filename)
             except:
                 print('Oops! An Error: There is a problem with a file, which you have tried to open.\n'
-                    ' Make sure, it has the right extension')
+                      ' Make sure, it has the right extension')
             print_tree()
         button_import_tree.clicked.connect(button_import_tree_clicked)
         vbox.addWidget(button_import_tree)
-        
+
         # button_import_avl_tree = QPushButton()
         # button_import_avl_tree.setText(
         #     self._global_variables.default_dict.get('import_avl_tree'))
@@ -1514,93 +1572,106 @@ class Application(QtWidgets.QMainWindow):
         #     print_avl_tree()
         # button_import_avl_tree.clicked.connect(button_import_avl_tree_clicked)
         # vbox.addWidget(button_import_avl_tree)
-        
+
         button_export_tree_as_tree = QPushButton()
         button_export_tree_as_tree.setText(
             self._global_variables.default_dict.get('export_tree_as_tree'))
+
         def button_export_tree_as_tree_clicked(arg):
             try:
-                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
-                                                            self._global_variables.default_dict.get(
-                                                                'save_file'),
-                                                                '.txt','Txt Files (*.txt)')
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                                self._global_variables.default_dict.get(
+                                                                    'save_file'),
+                                                                '.txt', 'Txt Files (*.txt)')
                 if name:
                     tree_manager = TreeManager()
                     tree_manager.write_tree_to_file_as_tree(self.connector.list_of_menu_instances[
                         instance_menu.id_of_instance].tree, name)
-                    print_tree()    
+                    print_tree()
             except:
-                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-                
-        button_export_tree_as_tree.clicked.connect(button_export_tree_as_tree_clicked)
+                print(
+                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+
+        button_export_tree_as_tree.clicked.connect(
+            button_export_tree_as_tree_clicked)
         vbox.addWidget(button_export_tree_as_tree)
-        
+
         button_export_avl_tree_as_tree = QPushButton()
         button_export_avl_tree_as_tree.setText(
             self._global_variables.default_dict.get('export_avl_tree_as_tree'))
+
         def button_export_avl_tree_as_tree_clicked(arg):
             try:
-                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
-                                                            self._global_variables.default_dict.get(
-                                                                'save_file'),
-                                                                '.txt','Txt Files (*.txt)')
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                                self._global_variables.default_dict.get(
+                                                                    'save_file'),
+                                                                '.txt', 'Txt Files (*.txt)')
                 if name:
                     tree_manager = TreeManager()
                     tree_manager.write_tree_to_file_as_tree(self.connector.list_of_menu_instances[
                         instance_menu.id_of_instance].avl_tree, name)
-                    print_avl_tree()    
+                    print_avl_tree()
             except:
-                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-                
-        button_export_avl_tree_as_tree.clicked.connect(button_export_avl_tree_as_tree_clicked)
+                print(
+                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+
+        button_export_avl_tree_as_tree.clicked.connect(
+            button_export_avl_tree_as_tree_clicked)
         vbox.addWidget(button_export_avl_tree_as_tree)
-        
+
         button_export_tree_as_list = QPushButton()
         button_export_tree_as_list.setText(
             self._global_variables.default_dict.get('export_tree_as_list'))
+
         def button_export_tree_as_list_clicked(arg):
             try:
-                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
-                                                            self._global_variables.default_dict.get(
-                                                                'save_file'),
-                                                                '.json','Json Files (*.json)')
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                                self._global_variables.default_dict.get(
+                                                                    'save_file'),
+                                                                '.json', 'Json Files (*.json)')
                 if name:
                     tree_manager = TreeManager()
                     tree_manager.write_tree_to_json_file_as_list(self.connector.list_of_menu_instances[
                         instance_menu.id_of_instance].tree, name)
                     print_tree()
             except:
-                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-            
-        button_export_tree_as_list.clicked.connect(button_export_tree_as_list_clicked)
+                print(
+                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+
+        button_export_tree_as_list.clicked.connect(
+            button_export_tree_as_list_clicked)
         vbox.addWidget(button_export_tree_as_list)
-        
+
         button_export_avl_tree_as_list = QPushButton()
         button_export_avl_tree_as_list.setText(
             self._global_variables.default_dict.get('export_avl_tree_as_list'))
+
         def button_export_avl_tree_as_list_clicked(arg):
             try:
-                name, _ = QtWidgets.QFileDialog.getSaveFileName(self, 
-                                                            self._global_variables.default_dict.get(
-                                                                'save_file'),
-                                                                '.json','Json Files (*.json)')
+                name, _ = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                                self._global_variables.default_dict.get(
+                                                                    'save_file'),
+                                                                '.json', 'Json Files (*.json)')
                 if name:
                     tree_manager = TreeManager()
                     tree_manager.write_tree_to_json_file_as_list(self.connector.list_of_menu_instances[
                         instance_menu.id_of_instance].avl_tree, name)
                     print_avl_tree()
             except:
-                print('Oops! An Error: There is a problem with a file, which you have tried to save.')
-            
-        button_export_avl_tree_as_list.clicked.connect(button_export_avl_tree_as_list_clicked)
+                print(
+                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+
+        button_export_avl_tree_as_list.clicked.connect(
+            button_export_avl_tree_as_list_clicked)
         vbox.addWidget(button_export_avl_tree_as_list)
-        
+
         empty_label_2 = QLabel('')
         vbox.addWidget(empty_label_2)
-        
+
         button_print_average_height = QPushButton()
         button_print_average_height.setText(
             self._global_variables.default_dict.get('print_average_height_of_avl_tree'))
+
         def button_print_average_height_clicked(arg):
             self.text_edit.clear()
             avl = AVL()
@@ -1611,13 +1682,15 @@ class Application(QtWidgets.QMainWindow):
             average_height = avl.get_average_height()
             self.text_edit.append(self._global_variables.default_dict.get(
                 'average_height_of_avl_tree') + str(average_height))
-            
-        button_print_average_height.clicked.connect(button_print_average_height_clicked)
+
+        button_print_average_height.clicked.connect(
+            button_print_average_height_clicked)
         vbox.addWidget(button_print_average_height)
-        
+
         button_print_most_frequent_element = QPushButton()
         button_print_most_frequent_element.setText(
             self._global_variables.default_dict.get('print_most_frequent_elements'))
+
         def button_print_most_frequent_element_clicked(arg):
             tree_manager = TreeManager()
             # list_of_frequency = self.connector.list_of_menu_instances[
@@ -1626,24 +1699,27 @@ class Application(QtWidgets.QMainWindow):
                 instance_menu.id_of_instance].tree.print_the_most_frequent_element()
             # print_list(list_of_frequency, 5)
             _print_list(list_of_frequency)
-        button_print_most_frequent_element.clicked.connect(button_print_most_frequent_element_clicked)
+        button_print_most_frequent_element.clicked.connect(
+            button_print_most_frequent_element_clicked)
         vbox.addWidget(button_print_most_frequent_element)
-        
+
         button_print_list_of_frequency = QPushButton()
         button_print_list_of_frequency.setText(
             self._global_variables.default_dict.get('print_list_of_frequency'))
+
         def button_print_list_of_frequency_clicked(arg):
             tree_manager = TreeManager()
             list_of_frequency = self.connector.list_of_menu_instances[
                 instance_menu.id_of_instance].tree.get_list_of_frequency()
             print_list(list_of_frequency, len(list_of_frequency))
-        button_print_list_of_frequency.clicked.connect(button_print_list_of_frequency_clicked)
+        button_print_list_of_frequency.clicked.connect(
+            button_print_list_of_frequency_clicked)
         vbox.addWidget(button_print_list_of_frequency)
-        
+
         def set_value_to_check_the_sum_of_digits_of_node():
             spinBox_value_to_check_the_sum_of_digits_of_node.setMaximum(100)
             if spinBox_value_to_check_the_sum_of_digits_of_node.value(
-                ) <= spinBox_value_to_check_the_sum_of_digits_of_node.value():
+            ) <= spinBox_value_to_check_the_sum_of_digits_of_node.value():
                 self.connector.list_of_menu_instances[
                     instance_menu.id_of_instance].value_to_check_the_sum_of_digits_of_node = float(
                         str(spinBox_value_to_check_the_sum_of_digits_of_node.value()))
@@ -1652,10 +1728,11 @@ class Application(QtWidgets.QMainWindow):
         spinBox_value_to_check_the_sum_of_digits_of_node.valueChanged.connect(
             set_value_to_check_the_sum_of_digits_of_node)
         vbox.addWidget(spinBox_value_to_check_the_sum_of_digits_of_node)
-        
+
         button_print_list_of_needed_values = QPushButton()
         button_print_list_of_needed_values.setText(
             self._global_variables.default_dict.get('print_list_of_needed_values'))
+
         def button_print_list_of_needed_values_clicked(arg):
             avl = AVL()
             _avl_tree_as_list = [i for i in self.connector.list_of_menu_instances[
@@ -1663,68 +1740,76 @@ class Application(QtWidgets.QMainWindow):
             for i, v in enumerate(_avl_tree_as_list):
                 avl.insert_element(v)
             print_dict(avl.get_list_of_needed_values(self.connector.list_of_menu_instances[
-                    instance_menu.id_of_instance].value_to_check_the_sum_of_digits_of_node))
-        button_print_list_of_needed_values.clicked.connect(button_print_list_of_needed_values_clicked)
+                instance_menu.id_of_instance].value_to_check_the_sum_of_digits_of_node))
+        button_print_list_of_needed_values.clicked.connect(
+            button_print_list_of_needed_values_clicked)
         vbox.addWidget(button_print_list_of_needed_values)
-        
+
         empty_label_3 = QLabel('')
         vbox.addWidget(empty_label_3)
-        
+
         button_delete_tree = QPushButton()
         button_delete_tree.setText(
             self._global_variables.default_dict.get('delete_tree'))
+
         def button_delete_tree_clicked(arg):
-            self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.delete_tree()
-            self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.delete_tree()
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree.delete_tree(
+            )
+            self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree.delete_tree(
+            )
             print_tree()
         button_delete_tree.clicked.connect(button_delete_tree_clicked)
         vbox.addWidget(button_delete_tree)
 
         content = QtWidgets.QWidget()
         vlay = QtWidgets.QVBoxLayout(content)
-        box = CollapsibleBox(self._global_variables.default_dict.get('additional_options_of_the_instance'))
-        
+        box = CollapsibleBox(self._global_variables.default_dict.get(
+            'additional_options_of_the_instance'))
+
         info_label = QLabel('')
         update_info_label()
-        
+
         vlay.addWidget(name)
         vlay.addWidget(info_label)
         vlay.addWidget(button_pretty_print_tree_to_text_edit)
         vlay.addWidget(button_pretty_print_avl_tree_to_text_edit)
         vlay.addWidget(box)
-        
+
         verticalSpacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum,
-                                            QtWidgets.QSizePolicy.Expanding)
-        vlay.addItem(verticalSpacer)    
-        
+                                               QtWidgets.QSizePolicy.Expanding)
+        vlay.addItem(verticalSpacer)
+
         box.setContentLayout(vbox)
         vlay.addStretch()
-        
+
         frame_ = QtWidgets.QFrame()
         frame_.setFrameStyle(QtWidgets.QFrame.Panel | QtWidgets.QFrame.Plain)
-        
+
         frame_.setLayout(vlay)
         self.QVBox_layout_of_dock_options.addWidget(frame_)
 
-    def set_a_project(self):        
-        if self.connector is None:  
+    def set_a_project(self):
+        if self.connector is None:
             self.connector = Connector()
             self.connector.current_widget_to_export = self.text_edit
             self.set_options_dock()
-        
+
     def clear_textedit(self):
         self.text_edit.clear()
 
     def close_application(self):
         msg = QMessageBox()
-        msg.setWindowTitle(self._global_variables.default_dict.get('confirm_exit'))
-        msg.setText(self._global_variables.default_dict.get('are_you_sure_you_want_to_exit'))
+        msg.setWindowTitle(
+            self._global_variables.default_dict.get('confirm_exit'))
+        msg.setText(self._global_variables.default_dict.get(
+            'are_you_sure_you_want_to_exit'))
         okButton = msg.addButton(self._global_variables.default_dict.get('yes'),
-                                  QMessageBox.AcceptRole)
-        msg.addButton(self._global_variables.default_dict.get('no'), QMessageBox.RejectRole)
+                                 QMessageBox.AcceptRole)
+        msg.addButton(self._global_variables.default_dict.get(
+            'no'), QMessageBox.RejectRole)
         msg.exec()
         if msg.clickedButton() == okButton:
-            sys.exit()            
+            sys.exit()
         else:
             pass
 
@@ -1738,4 +1823,4 @@ if __name__ == "__main__":
     app.setStyle("Fusion")
     myapp = Application()
     myapp.show()
-    sys.exit(app.exec_()) 
+    sys.exit(app.exec_())
