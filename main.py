@@ -1,6 +1,5 @@
 import sys
 from time import sleep
-from customGUI import Ui_MainWindow
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -877,7 +876,7 @@ class GlobalVariables:
             are_you_sure_you_want_to_exit = 'Are you sure you want to exit?',
             about_window_title = 'About',
             about_window_creators_name = 'Pavlov Alex',
-            about_window_creators_github = 'https://github.com/alexLAP7'
+            about_window_creators_github = 'https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
         )
         self._dict_rus = dict(
             yes = 'Да',
@@ -928,9 +927,10 @@ class GlobalVariables:
             are_you_sure_you_want_to_exit = 'Вы уверены, что хотите выйти?',
             about_window_title = 'Об авторе',
             about_window_creators_name = 'Павлов Александр',
-            about_window_creators_github = 'https://github.com/alexLAP7'
+            about_window_creators_github = 'https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
         )
         self.default_dict = self._dict_rus
+        self.default_dict = self._dict_eng
 
 
 class MenuInstance:
@@ -1124,8 +1124,6 @@ class AboutWindow(QtWidgets.QMainWindow):
 class Application(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
         self._global_variables = GlobalVariables()
         self.title = 'Application'
         self.setWindowTitle(self.title)
