@@ -844,7 +844,7 @@ class TreeManager:
 
 class GlobalVariables:
     def __init__(self):
-        self._dict_eng = dict(  # usage: self._global_variables.default_dict.get('
+        self._dict_eng = dict(
             yes='Yes',
             no='No',
             instance='Instance ',
@@ -893,7 +893,7 @@ class GlobalVariables:
             are_you_sure_you_want_to_exit='Are you sure you want to exit?',
             about_window_title='About',
             about_window_creators_name='Pavlov Alex',
-            about_window_creators_github='https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
+            about_window_creators_github='https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is an old link)'
         )
         self._dict_rus = dict(
             yes='Да',
@@ -944,9 +944,9 @@ class GlobalVariables:
             are_you_sure_you_want_to_exit='Вы уверены, что хотите выйти?',
             about_window_title='Об авторе',
             about_window_creators_name='Павлов Александр',
-            about_window_creators_github='https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is the old link)'
+            about_window_creators_github='https://github.com/alexLX7 \n\n(https://github.com/alexLAP7 is an old link)'
         )
-        self.default_dict = self._dict_rus
+        # self.default_dict = self._dict_rus
         self.default_dict = self._dict_eng
 
 
@@ -1207,7 +1207,7 @@ class Application(QtWidgets.QMainWindow):
                 img.save(name)
         except:
             print(
-                'Oops! An Error: There is a problem with a file, which you have tried to save.')
+                'Oops! An Error: There is a problem with the file you were trying to save.')
 
     def show_instructions(self):
         self.instruction_window.show()
@@ -1546,7 +1546,7 @@ class Application(QtWidgets.QMainWindow):
                     self.connector.list_of_menu_instances[instance_menu.id_of_instance].tree = \
                         tree_manager.read_tree_from_json_file(filename)
             except:
-                print('Oops! An Error: There is a problem with a file, which you have tried to open.\n'
+                print('Oops! An Error: There is a problem with the file you were trying to open.\n'
                       ' Make sure, it has the right extension')
             print_tree()
         button_import_tree.clicked.connect(button_import_tree_clicked)
@@ -1567,7 +1567,7 @@ class Application(QtWidgets.QMainWindow):
         #             self.connector.list_of_menu_instances[instance_menu.id_of_instance].avl_tree = \
         #                 tree_manager.read_tree_from_json_file(filename)
         #     except:
-        #         print('Oops! An Error: There is a problem with a file, which you have tried to open.\n'
+        #         print('Oops! An Error: There is a problem with the file you were trying to open.\n'
         #             ' Make sure, it has the right extension')
         #     print_avl_tree()
         # button_import_avl_tree.clicked.connect(button_import_avl_tree_clicked)
@@ -1590,7 +1590,7 @@ class Application(QtWidgets.QMainWindow):
                     print_tree()
             except:
                 print(
-                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+                    'Oops! An Error: There is a problem with the file you were trying to save.')
 
         button_export_tree_as_tree.clicked.connect(
             button_export_tree_as_tree_clicked)
@@ -1613,7 +1613,7 @@ class Application(QtWidgets.QMainWindow):
                     print_avl_tree()
             except:
                 print(
-                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+                    'Oops! An Error: There is a problem with the file you were trying to save.')
 
         button_export_avl_tree_as_tree.clicked.connect(
             button_export_avl_tree_as_tree_clicked)
@@ -1636,7 +1636,7 @@ class Application(QtWidgets.QMainWindow):
                     print_tree()
             except:
                 print(
-                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+                    'Oops! An Error: There is a problem with the file you were trying to save.')
 
         button_export_tree_as_list.clicked.connect(
             button_export_tree_as_list_clicked)
@@ -1659,7 +1659,7 @@ class Application(QtWidgets.QMainWindow):
                     print_avl_tree()
             except:
                 print(
-                    'Oops! An Error: There is a problem with a file, which you have tried to save.')
+                    'Oops! An Error: There is a problem with the file you were trying to save.')
 
         button_export_avl_tree_as_list.clicked.connect(
             button_export_avl_tree_as_list_clicked)
