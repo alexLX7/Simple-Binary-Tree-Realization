@@ -1,4 +1,55 @@
+
 # Simple-Binary-Tree-Realization
+
+This is a project to develop, implement and display custom data structures, including binary trees and height-balanced binary trees, also called AVL trees (named after inventors Adelson-Velsky and Landis). This is one of my projects from one of my university courses.
+
+An original technical task is attached and displayed down below.
+
+# Results
+
+All tasks are fully completed within the deadline (Dec of 2019). I'm sorry that I didn't add this README file earlier.
+
+![](.github/0.gif)
+
+A demo of int/float/str trees:
+
+![](.github/3.gif)
+
+
+# What are the parts of this repo?
+
+### Back-end
+
+There are 3 separate files:
+
+1. 'main.py', contains a gui with all needed classes
+2. 'main_without_gui.py', contains classes for a basic binary tree implementation
+3. 'main_avl.py', contains avl tree implementation
+
+### Cross-platform interface
+
+An interface is written both in Russian and in English, so it is possible to switch language dictionaries in the source code
+
+![](.github/7.gif)
+
+It is possible to change the look of the interface
+
+![](.github/5.gif)
+
+This app has a tree-viewer based on PyQt5. This viewer is able to:
+
+- to show the same data as a binary tree and as a height-balanced tree
+
+- to add/delete elements
+
+- to import/export trees as json files
+
+- to export trees as 'txt' files, to export trees as 'png' files
+
+- to add as many trees as You want
+
+![](.github/6.gif)
+
 
 # Technical Task (The original version is written in Russian)
 
@@ -16,7 +67,7 @@ in accordance with the following options for tasks, the 9th variant:
 * Find the maximum element of a binary tree and the number of repetitions of the maximum element in the given tree.
 * Display the numbers, the sum of digits (modulo) of which is > N, where N is a number that the user can set. Determine the level of these elements. 
 
-***Develop a graphical user interface.***
+***Design a graphical user interface.***
 
 
 
@@ -40,23 +91,46 @@ in accordance with the following options for tasks, the 9th variant:
 ***Разработать графический интерфейс пользователя.***
 
 
-# Additional features
-- An interface is written both in Russian and in English (switch the dictionaries in the source code)
-- This is a crossplatform application based on PyQt5
-- Ability to import/export trees as json file
-- Ability to export trees as txt file
-- Ability to export trees as png file
-
-
-# Results
-- All tasks are fully completed within the deadline (Dec of 2019)
-- I'm sorry that I didn't initially add the README file
-
 
 # How to run the code
-The following steps assume using VS Code
+
+The following steps assume using VS Code. 
+
+Open a terminal:
+
+![](.github/setup_0_open_terminal.gif)
+
+Create a virtual environment called 'venv':
+
+![](.github/setup_1_python3__m_venv_venv.png)
+
 ```
 python3 -m venv venv
-pip install -r requirements.txt
-run main.py
 ```
+
+Select 'venv' for the workspace folder by clicking 'Yes':
+
+![](.github/setup_2_create_vscode_workspace.png)
+
+
+Activate Your 'venv' or simply open a new terminal in VS Code by clicking "Plus" symbol (near 'bash'), it will auto-activate it:
+
+![](.github/setup_3_activate_venv.png)
+
+Install the requirements:
+
+![](.github/setup_4_pip_install.png)
+
+```
+pip install -r requirements.txt
+```
+
+Run the code:
+
+```
+python3 main.py
+```
+
+
+## Rate this project! :star:
+### If You liked this repo, give it a star. Thanks!
